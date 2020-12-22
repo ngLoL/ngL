@@ -2,13 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Splash = () => {
-  const StyledSplashHeaderSummonerName = styled.h2`
+  const StyledSplashHeading = styled.div`
+    background-image: url('https://nglol.s3-us-west-1.amazonaws.com/champion/splash/Aatrox_0.jpg');
+    background-repeat: no-repeat;
+    height: 400px;
+  `;
+  const StyledSplashSummonerName = styled.h2`
     font-family: 'Roboto', san-serif;
   `;
   return (
     <div id="splash">
-      <img src="https://nglol.s3-us-west-1.amazonaws.com/champion/splash/Aatrox_0.jpg" />
-      <StyledSplashHeaderSummonerName>Jeongmo</StyledSplashHeaderSummonerName>
+      <StyledSplashHeading>Aatrox</StyledSplashHeading>
+      <StyledSplashSummonerName>Jeongmo</StyledSplashSummonerName>
     </div>
   );
 }
