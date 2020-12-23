@@ -30,22 +30,32 @@ app.get('/summoner/:id', (req, res) => {
 
 app.get('/gameModes/:id', (req, res) => {
   axios.get(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${req.params.id}?api_key=${api_key}`)
-  .then(results => {
-    res.status(200).send(results.data);
-  })
-  .catch(err => {
-    res.status(400).send(err);
-  });
+    .then(results => {
+      res.status(200).send(results.data);
+    })
+    .catch(err => {
+      res.status(400).send(err);
+    });
 });
 
-app.get('/matchHistory/:accountId&:start&:end', (req, res) => {
+app.get('/matchHistoryPage/:accountId&:start&:end', (req, res) => {
   axios.get(`https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/${req.params.accountId}?queue=420&endIndex=${req.params.end}&beginIndex=${req.params.start}&api_key=${api_key}`)
-  .then(results => {
-    res.status(200).send(results.data);
-  })
-  .catch(err => {
-    res.status(400).send(err);
-  });
+    .then(results => {
+      res.status(200).send(results.data);
+    })
+    .catch(err => {
+      res.status(400).send(err);
+    });
+})
+
+app.get('/individualMatch/:id', (req, res) => {
+  axios.get(`https://na1.api.riotgames.com/lol/match/v4/matches/${req.params.id}?api_key=${api_key}`)
+    .then(results => {
+      res.status(200).send(results.data);
+    })
+    .catch(err => {
+      res.status(400).send(err);
+    });
 })
 
 app.listen(port, () => console.log(`currently listening on localhost:${port}`));

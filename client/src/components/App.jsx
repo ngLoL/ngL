@@ -8,7 +8,7 @@ const App = () => {
   const [summonerId, setSummonerId] = useState('');
 
   useEffect(() => {
-    getSummonerInfo('Jeongmo');
+    getSummonerInfo('MUTEALLNOTALK');
   }, []);
 
   function getSummonerInfo(summonerName) {
@@ -45,7 +45,20 @@ const App = () => {
 
         return Promise.all(matchHistoryPage);
       })
-      .then((results) => console.log(results))
+      .then((results) => {
+        let matchStorage = [];
+        for (let i = 0; i < results.length; i++) {
+          let matchHistory = results[i].data.matches
+          for (let j = 0; j < matchHistory.length; j++) {
+            matchStorage.push(axios.get(`/individualMatch/${matchHistory[j].gameId}`), matchHistory[j].champion)
+          }
+        }
+
+        return Promise.all(matchStorage)
+      })
+      .then((results) => {
+        console.log(results)
+      })
       .catch ((err) => {
         console.error(err);
       });
