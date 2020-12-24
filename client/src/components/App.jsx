@@ -8,7 +8,7 @@ const App = () => {
   const [summonerId, setSummonerId] = useState('');
 
   useEffect(() => {
-    getSummonerInfo('MUTEALLNOTALK');
+    getSummonerInfo('Jeongmo');
   }, []);
 
   function getSummonerInfo(summonerName) {

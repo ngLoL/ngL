@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const path = require('path');
 const compression = require('compression');
 const axios = require('axios');
-const api_key = require('../riotAPIKey.js')
+const api_key = require('../riotAPIKey.js');
 
 const app = express();
 const port = 8000;
