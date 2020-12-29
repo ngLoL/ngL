@@ -38,10 +38,11 @@ const App = () => {
         }
 
         let matchHistoryPage = [];
-        let length = Math.floor(totalRankGames / 100);
-        for (let j = 0; j <= length; j++) {
-          matchHistoryPage.push(axiosGetMatches(j * 100, Math.min(j * 100 + 100, totalRankGames)));
-        }
+        matchHistoryPage.push(axiosGetMatches(0, Math.min(10, totalRankGames)));
+        // let length = Math.floor(totalRankGames / 100);
+        // for (let j = 0; j <= length; j++) {
+        //   matchHistoryPage.push(axiosGetMatches(j * 100, Math.min(j * 100 + 100, totalRankGames)));
+        // }
 
         return Promise.all(matchHistoryPage);
       })
