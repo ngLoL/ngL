@@ -14,10 +14,11 @@ const App = () => {
   function getSummonerInfo(summonerName) {
     axios.get(`/summoner/${summonerName}`)
       .then((results) => {
+        setSummonerId(results.data.name);
         return Promise.all([
           axios.get(`/gameModes/${results.data.id}`),
           results.data.accountId
-        ])
+        ]);
       })
       .then(([queueType, accountId]) => {
         let totalRankGames = 0;
@@ -60,7 +61,7 @@ const App = () => {
       .then((results) => {
         console.log(results)
       })
-      .catch ((err) => {
+      .catch((err) => {
         console.error(err);
       });
   }
