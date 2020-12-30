@@ -8,16 +8,17 @@ const App = () => {
   const [summonerId, setSummonerId] = useState('');
 
   useEffect(() => {
-    getSummonerInfo('MUTEALLNOTALK');
+    getSummonerInfo('Jeongmo');
   }, []);
 
   function getSummonerInfo(summonerName) {
     axios.get(`/summoner/${summonerName}`)
       .then((results) => {
+        setSummonerId(results.data.name);
         return Promise.all([
           axios.get(`/gameModes/${results.data.id}`),
           results.data.accountId
-        ])
+        ]);
       })
       .then(([queueType, accountId]) => {
         let totalRankGames = 0;
@@ -38,10 +39,11 @@ const App = () => {
         }
 
         let matchHistoryPage = [];
-        let length = Math.floor(totalRankGames / 100);
-        for (let j = 0; j <= length; j++) {
-          matchHistoryPage.push(axiosGetMatches(j * 100, Math.min(j * 100 + 100, totalRankGames)));
-        }
+        matchHistoryPage.push(axiosGetMatches(0, Math.min(10, totalRankGames)));
+        // let length = Math.floor(totalRankGames / 100);
+        // for (let j = 0; j <= length; j++) {
+        //   matchHistoryPage.push(axiosGetMatches(j * 100, Math.min(j * 100 + 100, totalRankGames)));
+        // }
 
         return Promise.all(matchHistoryPage);
       })
@@ -59,7 +61,7 @@ const App = () => {
       .then((results) => {
         console.log(results)
       })
-      .catch ((err) => {
+      .catch((err) => {
         console.error(err);
       });
   }

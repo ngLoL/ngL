@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Splash = () => {
+const Splash = (props) => {
   const StyledSplashHeading = styled.div`
     background-image: url('https://nglol.s3-us-west-1.amazonaws.com/champion/splash/Aatrox_0.jpg');
     background-repeat: no-repeat;
@@ -12,8 +12,8 @@ const Splash = () => {
   `;
   return (
     <div id="splash">
-      <StyledSplashHeading>Aatrox</StyledSplashHeading>
-      <StyledSplashSummonerName>Jeongmo</StyledSplashSummonerName>
+      <StyledSplashHeading></StyledSplashHeading>
+      <StyledSplashSummonerName></StyledSplashSummonerName>
     </div>
   );
 }
