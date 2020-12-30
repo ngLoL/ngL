@@ -7,8 +7,7 @@ import SearchBar from './SearchBar.jsx';
 const App = () => {
   const [summonerName, setSummonerName] = useState('');
   const [summonerId, setSummonerId] = useState('');
-  const [playedChampionIds, setPlayedChampionIds] = useState([]);
-  const [mostChampionId, setMostChampionId] = useState('');
+  const [mostChampionName, setMostChampionName] = useState('');
 
   useEffect(() => {
     getSummonerInfo('Jeongmo');
@@ -66,8 +65,10 @@ const App = () => {
             matchStorage.push(axios.get(`/individualMatch/${matchHistory[j].gameId}`));
           }
         }
+
         let mostChampionId = Object.keys(playedChampions).reduce((a, b) => playedChampions[a] > playedChampions[b] ? a : b);
-        setMostChampionId(mostChampionId);
+        let mostChampionName = getChampionName(mostChampionId);
+        setMostChampionName(mostChampionName);
         return Promise.all(matchStorage)
       })
       .then((results) => {
@@ -81,9 +82,9 @@ const App = () => {
 
   return (
     <div>
-      <Splash />
+      {mostChampionName != '' && <Splash mostChampionName={mostChampionName}/>}
       <div>Summoner Name: {summonerName}</div>
-      <div>Most Played Champion: {getChampionName(mostChampionId)}</div>
+      <div>Most Played Champion: {mostChampionName}</div>
     </div>
   );
 }
