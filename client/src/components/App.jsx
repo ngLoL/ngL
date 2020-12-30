@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import {getChampionName} from '../../../champion-library/helper.js';
 import Splash from './Splash.jsx';
 import SearchBar from './SearchBar.jsx';
 
 const App = () => {
   const [summonerName, setSummonerName] = useState('');
   const [summonerId, setSummonerId] = useState('');
+  const [playedChampionIds, setPlayedChampionIds] = useState([]);
+  const [mostChampionId, setMostChampionId] = useState('');
 
   useEffect(() => {
     getSummonerInfo('Jeongmo');
@@ -14,7 +17,7 @@ const App = () => {
   function getSummonerInfo(summonerName) {
     axios.get(`/summoner/${summonerName}`)
       .then((results) => {
-        setSummonerId(results.data.name);
+        setSummonerName(results.data.name);
         return Promise.all([
           axios.get(`/gameModes/${results.data.id}`),
           results.data.accountId
@@ -49,17 +52,27 @@ const App = () => {
       })
       .then((results) => {
         let matchStorage = [];
+        let playedChampions = {};
         for (let i = 0; i < results.length; i++) {
-          let matchHistory = results[i].data.matches
+          let matchHistory = results[i].data.matches;
           for (let j = 0; j < matchHistory.length; j++) {
-            matchStorage.push(axios.get(`/individualMatch/${matchHistory[j].gameId}`), matchHistory[j].champion)
+            // count how many times each champion was played
+            let champion = matchHistory[j].champion;
+            if (!playedChampions[champion]) {
+              playedChampions[champion] = 1;
+            } else {
+              playedChampions[champion]++;
+            }
+            matchStorage.push(axios.get(`/individualMatch/${matchHistory[j].gameId}`));
           }
         }
-
+        let mostChampionId = Object.keys(playedChampions).reduce((a, b) => playedChampions[a] > playedChampions[b] ? a : b);
+        setMostChampionId(mostChampionId);
         return Promise.all(matchStorage)
       })
       .then((results) => {
-        console.log(results)
+        let datas = results.map(({data}) => data);
+        console.log(datas);
       })
       .catch((err) => {
         console.error(err);
@@ -69,7 +82,8 @@ const App = () => {
   return (
     <div>
       <Splash />
-      <div>Summoner ID: {summonerId}</div>
+      <div>Summoner Name: {summonerName}</div>
+      <div>Most Played Champion: {getChampionName(mostChampionId)}</div>
     </div>
   );
 }
