@@ -28,21 +28,19 @@ app.get('/summoner/:summonerName', (req, res) => {
     });
 });
 
-app.get('/gameModes/:id&:accountId', (req, res) => {
+app.get('/numRankGames/:id', (req, res) => {
   axios.get(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${req.params.id}?api_key=${api_key}`)
     .then(results => {
-      let totalRankGames = 0;
-      let accountId = req.params.accountId;
+      let numRankGames = '0';
       const queueTypeArr = results.data;
 
       for (let i = 0; i < queueTypeArr.length; i++) {
         if (queueTypeArr[i].queueType === "RANKED_SOLO_5x5") {
-          totalRankGames = queueTypeArr[i].wins + queueTypeArr[i].losses;
+          numRankGames += queueTypeArr[i].wins + queueTypeArr[i].losses;
         }
       }
 
-      const data = { totalRankGames, accountId };
-      res.status(200).send(data);
+      res.status(200).send(numRankGames);
     })
     .catch(err => {
       res.status(400).send(err);

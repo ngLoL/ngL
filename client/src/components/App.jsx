@@ -6,7 +6,6 @@ import SearchBar from './SearchBar.jsx';
 
 const App = () => {
   const [summonerName, setSummonerName] = useState('');
-  const [summonerId, setSummonerId] = useState('');
   const [mostChampionName, setMostChampionName] = useState('');
 
   useEffect(() => {
@@ -15,27 +14,24 @@ const App = () => {
 
   function getSummonerInfo(summonerName) {
     axios.get(`/summoner/${summonerName}`)
-      .then(results => {
-        setSummonerName(results.data.name);
-        return axios.get(`/gameModes/${results.data.id}&${results.data.accountId}`)
+      .then(({data: {name, id, accountId}}) => {
+        setSummonerName(name);
+        return Promise.all([axios.get(`/numRankGames/${id}`), accountId]);
       })
-      .then(results => {
-        const totalRankGames = results.data.totalRankGames;
-        const accountId = results.data.accountId;
-        const start = 0;
-        const end = 10;
+      .then((results) => {
+        console.log(results);
 
-        if (!totalRankGames) {
+        if (results.data.numRankGames === 0) {
           throw new Error(`You don't have any ranked solo games played`)
         }
 
-        return axios.get(`/matchHistoryPage/${accountId}&${start}&${end}`);
+        return axios.get(`/matchHistoryPage/${accountId}&0&10`);
       })
-      .then((results) => {
-        let mostChampionName = getChampionName(results.data.mostChampionId);
+      .then(({data: {mostChampionId, gameIds}}) => {
+        let mostChampionName = getChampionName(mostChampionId);
         setMostChampionName(mostChampionName);
 
-        const matchStorage = results.data.gameIds.map(gameId => axios.get(`/individualMatch/${gameId}`));
+        const matchStorage = gameIds.map(gameId => axios.get(`/individualMatch/${gameId}`));
 
         return Promise.all(matchStorage);
       })
