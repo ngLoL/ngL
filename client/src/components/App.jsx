@@ -19,8 +19,6 @@ const App = () => {
         return Promise.all([axios.get(`/numRankGames/${id}`), accountId]);
       })
       .then((results) => {
-        console.log(results);
-
         if (results.data.numRankGames === 0) {
           throw new Error(`You don't have any ranked solo games played`)
         }

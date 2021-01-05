@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
+const { getSummoner } = require('./model.js');
 const compression = require('compression');
 const axios = require('axios');
 const api_key = require('../riotAPIKey.js');
@@ -39,7 +40,6 @@ app.get('/numRankGames/:id', (req, res) => {
           numRankGames += queueTypeArr[i].wins + queueTypeArr[i].losses;
         }
       }
-
       res.status(200).send(numRankGames);
     })
     .catch(err => {
