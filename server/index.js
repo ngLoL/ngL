@@ -32,7 +32,7 @@ app.get('/summoner/:summonerName', (req, res) => {
 app.get('/numRankGames/:id', (req, res) => {
   axios.get(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${req.params.id}?api_key=${api_key}`)
     .then(results => {
-      let numRankGames = '0';
+      let numRankGames = '';
       const queueTypeArr = results.data;
 
       for (let i = 0; i < queueTypeArr.length; i++) {

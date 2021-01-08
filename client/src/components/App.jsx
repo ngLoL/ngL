@@ -9,7 +9,7 @@ const App = () => {
   const [mostChampionName, setMostChampionName] = useState('');
 
   useEffect(() => {
-    getSummonerInfo('Jeongmo');
+    getSummonerInfo('HippoSnuggler');
   }, []);
 
   function getSummonerInfo(summonerName) {
@@ -18,9 +18,10 @@ const App = () => {
         setSummonerName(name);
         return Promise.all([axios.get(`/numRankGames/${id}`), accountId]);
       })
-      .then((results) => {
-        if (results.data.numRankGames === 0) {
-          throw new Error(`You don't have any ranked solo games played`)
+      .then(([{data: {numRankGames}}, accountId]) => {
+        console.log(accountId);
+        if (numRankGames === '0') {
+          throw new Error(`You don't have any ranked solo games played`);
         }
 
         return axios.get(`/matchHistoryPage/${accountId}&0&10`);
