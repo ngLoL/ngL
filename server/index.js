@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
+const { getSummoner } = require('./model.js');
 const compression = require('compression');
 const axios = require('axios');
 const api_key = require('../riotAPIKey.js');
@@ -18,8 +19,8 @@ app.use(compression());
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
-app.get('/summoner/:id', (req, res) => {
-  axios.get(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${req.params.id}?api_key=${api_key}`)
+app.get('/summoner/:summonerName', (req, res) => {
+  axios.get(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${req.params.summonerName}?api_key=${api_key}`)
     .then((results) => {
       res.status(200).send(results.data);
     })
@@ -28,10 +29,18 @@ app.get('/summoner/:id', (req, res) => {
     });
 });
 
-app.get('/gameModes/:id', (req, res) => {
+app.get('/numRankGames/:id', (req, res) => {
   axios.get(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${req.params.id}?api_key=${api_key}`)
     .then(results => {
-      res.status(200).send(results.data);
+      let numRankGames = '';
+      const queueTypeArr = results.data;
+
+      for (let i = 0; i < queueTypeArr.length; i++) {
+        if (queueTypeArr[i].queueType === "RANKED_SOLO_5x5") {
+          numRankGames += queueTypeArr[i].wins + queueTypeArr[i].losses;
+        }
+      }
+      res.status(200).send(numRankGames);
     })
     .catch(err => {
       res.status(400).send(err);
@@ -41,7 +50,24 @@ app.get('/gameModes/:id', (req, res) => {
 app.get('/matchHistoryPage/:accountId&:start&:end', (req, res) => {
   axios.get(`https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/${req.params.accountId}?queue=420&endIndex=${req.params.end}&beginIndex=${req.params.start}&api_key=${api_key}`)
     .then(results => {
-      res.status(200).send(results.data);
+      let gameIds = [];
+      let champion = 0;
+      const playedChampions = {};
+      let matchHistory = results.data.matches;
+
+      for (let j = 0; j < matchHistory.length; j++) {
+        gameIds.push(matchHistory[j].gameId);
+        champion = matchHistory[j].champion;
+
+        if (!playedChampions[champion]) {
+          playedChampions[champion] = 1;
+        } else { playedChampions[champion]++; }
+      }
+
+      let mostChampionId = Object.keys(playedChampions).reduce((a, b) => playedChampions[a] > playedChampions[b] ? a : b);
+
+      const data = { mostChampionId, gameIds };
+      res.status(200).send(data);
     })
     .catch(err => {
       res.status(400).send(err);
