@@ -19,9 +19,8 @@ const App = () => {
         return Promise.all([axios.get(`/numRankGames/${id}`), accountId]);
       })
       .then(([{data: {numRankGames}}, accountId]) => {
-        console.log(accountId);
         if (numRankGames === '0') {
-          throw new Error(`You don't have any ranked solo games played`);
+          throw new Error(`You don't have enough ranked solo games played`);
         }
 
         return axios.get(`/matchHistoryPage/${accountId}&0&10`);
