@@ -40,6 +40,7 @@ app.get('/numRankGames/:id', (req, res) => {
           numRankGames += queueTypeArr[i].wins + queueTypeArr[i].losses;
         }
       }
+      numRankGames = numRankGames === '' ? '0' : numRankGames;
       res.status(200).send(numRankGames);
     })
     .catch(err => {
@@ -65,6 +66,7 @@ app.get('/matchHistoryPage/:accountId&:start&:end', (req, res) => {
       }
 
       let mostChampionId = Object.keys(playedChampions).reduce((a, b) => playedChampions[a] > playedChampions[b] ? a : b);
+      // query champname
 
       const data = { mostChampionId, gameIds };
       res.status(200).send(data);
