@@ -37,6 +37,7 @@ const App = () => {
       .then((results) => {
         let datas = results.map(({data}) => data);
         console.log(datas);
+
       })
       .catch((err) => {
         console.error(err);
