@@ -21,40 +21,31 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.get('/summoner/:summonerName', (req, res) => {
   axios.get(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${req.params.summonerName}?api_key=${api_key}`)
-    .then((results) => {
-      res.status(200).send(results.data);
+    .then(({ data: { name, id, accountId } }) => {
+      const finalInfo = { summonerName: name };
+      return Promise.all([finalInfo, accountId, axios.get(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${api_key}`)]);
     })
-    .catch(err => {
-      res.status(400).send(err);
-    });
-});
-
-app.get('/numRankGames/:id', (req, res) => {
-  axios.get(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${req.params.id}?api_key=${api_key}`)
-    .then(results => {
+    .then(([finalInfo, accountId, { data }]) => {
       let numRankGames = '';
-      const queueTypeArr = results.data;
+      const queueTypeArr = data;
 
       for (let i = 0; i < queueTypeArr.length; i++) {
         if (queueTypeArr[i].queueType === "RANKED_SOLO_5x5") {
           numRankGames += queueTypeArr[i].wins + queueTypeArr[i].losses;
         }
       }
-      numRankGames = numRankGames === '' ? '0' : numRankGames;
-      res.status(200).send(numRankGames);
-    })
-    .catch(err => {
-      res.status(400).send(err);
-    });
-});
 
-app.get('/matchHistoryPage/:accountId&:start&:end', (req, res) => {
-  axios.get(`https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/${req.params.accountId}?queue=420&endIndex=${req.params.end}&beginIndex=${req.params.start}&api_key=${api_key}`)
-    .then(results => {
+      if (numRankGames === '') {
+        throw new Error(`You don't have enough ranked solo games played`);
+      }
+
+      return Promise.all([{ ...finalInfo, numRankGames }, axios.get(`https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&endIndex=10&beginIndex=0&api_key=${api_key}`)]);
+    })
+    .then(([finalInfo, { data: { matches } }]) => {
       let gameIds = [];
       let champion = 0;
       const playedChampions = {};
-      let matchHistory = results.data.matches;
+      let matchHistory = matches;
 
       for (let j = 0; j < matchHistory.length; j++) {
         gameIds.push(matchHistory[j].gameId);
@@ -66,24 +57,18 @@ app.get('/matchHistoryPage/:accountId&:start&:end', (req, res) => {
       }
 
       let mostChampionId = Object.keys(playedChampions).reduce((a, b) => playedChampions[a] > playedChampions[b] ? a : b);
-      // query champname
 
-      const data = { mostChampionId, gameIds };
-      res.status(200).send(data);
+      const matchStorage = gameIds.map(gameId => axios.get(`https://na1.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${api_key}`));
+
+      return Promise.all([{...finalInfo, mostChampionId}, ...matchStorage]);
+    })
+    .then(([finalInfo, ...matches]) => {
+      //matches is an array of huge match objects
+      res.status(200).send(results);
     })
     .catch(err => {
       res.status(400).send(err);
     });
-})
-
-app.get('/individualMatch/:id', (req, res) => {
-  axios.get(`https://na1.api.riotgames.com/lol/match/v4/matches/${req.params.id}?api_key=${api_key}`)
-    .then(results => {
-      res.status(200).send(results.data);
-    })
-    .catch(err => {
-      res.status(400).send(err);
-    });
-})
+});
 
 app.listen(port, () => console.log(`currently listening on localhost:${port}`));

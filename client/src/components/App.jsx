@@ -9,35 +9,38 @@ const App = () => {
   const [mostChampionName, setMostChampionName] = useState('');
 
   useEffect(() => {
-    getSummonerInfo('HippoSnuggler');
+    getSummonerInfo('Iceh');
   }, []);
 
   function getSummonerInfo(summonerName) {
     axios.get(`/summoner/${summonerName}`)
       .then(({data: {name, id, accountId}}) => {
-        setSummonerName(name);
-        return Promise.all([axios.get(`/numRankGames/${id}`), accountId]);
+        // setSummonerName(name);
+        // return Promise.all([axios.get(`/numRankGames/${id}`), accountId]);
       })
-      .then(([{data: {numRankGames}}, accountId]) => {
-        if (numRankGames === '0') {
-          throw new Error(`You don't have enough ranked solo games played`);
-        }
-
-        return axios.get(`/matchHistoryPage/${accountId}&0&10`);
+      .then((result) => {
+        console.log(result.data);
       })
-      .then(({data: {mostChampionId, gameIds}}) => {
-        let mostChampionName = getChampionName(mostChampionId);
-        setMostChampionName(mostChampionName);
+      // .then(([{data: {numRankGames}}, accountId]) => {
+      //   if (numRankGames === '0') {
+      //     throw new Error(`You don't have enough ranked solo games played`);
+      //   }
 
-        const matchStorage = gameIds.map(gameId => axios.get(`/individualMatch/${gameId}`));
+      //   return axios.get(`/matchHistoryPage/${accountId}&0&10`);
+      // })
+      // .then(({data: {mostChampionId, gameIds}}) => {
+      //   let mostChampionName = getChampionName(mostChampionId);
+      //   setMostChampionName(mostChampionName);
 
-        return Promise.all(matchStorage);
-      })
-      .then((results) => {
-        let datas = results.map(({data}) => data);
-        console.log(datas);
+      //   const matchStorage = gameIds.map(gameId => axios.get(`/individualMatch/${gameId}`));
 
-      })
+      //   return Promise.all(matchStorage);
+      // })
+      // .then((results) => {
+      //   let datas = results.map(({data}) => data);
+      //   console.log(datas);
+
+      // })
       .catch((err) => {
         console.error(err);
       });
