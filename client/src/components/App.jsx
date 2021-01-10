@@ -63,15 +63,17 @@ const App = () => {
   function getSummonerInfo(summonerName) {
     axios.get(`/summoner/${summonerName}`)
       .then((results) => {
+        const championName = getChampionName(results.data.mostChampionId);
+        setMostPlayedChampionName(championName)
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
   }
 
   return (
     <div>
-      {mostChampionName != '' && <Splash mostChampionName={mostChampionName} />}
+      {mostPlayedChampionName != '' && <Splash mostPlayedChampionName={mostPlayedChampionName} />}
       <div>Avg KDA: {Math.round(100*((kills + assists) / deaths)) / 100}</div>
       <div>Avg CS/min: {Math.round(100*(cs / (gameLength / 60))) / 100}</div>
       <div>Just to show that supports are more than just wards these days. They are also this stat.</div>
@@ -86,7 +88,7 @@ const App = () => {
       <div>Double Kills:{doubleKills} Triple Kill: {tripleKills} QuadraKills: {quadraKills} PentaKills: {pentaKills}</div>
       <div>We all have bad days. Yours are when you play these champs.</div>
       <div>Summoner Name: {summonerName}</div>
-      <div>Most Played Champion: {mostChampionName}</div>
+      <div>Most Played Champion: {mostPlayedChampionName}</div>
     </div>
   );
 }
