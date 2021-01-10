@@ -88,7 +88,11 @@ const App = () => {
     axios.get(`/summoner/${summonerName}`)
       .then((results) => {
         const championName = getChampionName(results.data.mostChampionId);
+<<<<<<< HEAD
         setInfo({mostPlayedChampionName: championName})
+=======
+        setInfo({ ...info, mostPlayedChampion: championName})
+>>>>>>> 1e6e3912e9f0cef967bbba92f31859b4cc75e2ea
       })
       .catch((err) => {
         console.log(err);
@@ -98,8 +102,8 @@ const App = () => {
   return (
     <div>
       {info.mostPlayedChampion != 0 && <Splash mostChampionName={info.mostPlayedChampion} />}
-      <div>Summoner Name: {summonerName}</div>
-      <div>Most Played Champion: {mostChampionName}</div>
+      <div>Summoner Name: {info.summonerName}</div>
+      <div>Most Played Champion: {info.mostPlayedChampion}</div>
 
       <div>We'll give the boring stuff first.</div>
       <div>Avg KDA: {Math.round(100*((info.kills + info.assists) / info.deaths)) / 100}</div>
