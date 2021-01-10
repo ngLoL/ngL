@@ -67,7 +67,7 @@ const App = () => {
         gameDuration: 0,
         totalDamageToChamps: 0,
       },
-    }
+    },
     numOfExecutions: 0,
     gamesUnder20: 0,
     gamesUnder30: 0,
@@ -88,7 +88,7 @@ const App = () => {
     axios.get(`/summoner/${summonerName}`)
       .then((results) => {
         const championName = getChampionName(results.data.mostChampionId);
-        setMostPlayedChampionName(championName)
+        setInfo({mostPlayedChampionName: championName})
       })
       .catch((err) => {
         console.log(err);
@@ -134,7 +134,7 @@ const App = () => {
       <div>Gold wasted: {info.goldEarned - info.goldSpent}</div>
 
       <div>This is the amount of time you didn't let others play League of Legends. Poor soul(s)</div>
-      <div>Time Spent Ccing Others: {info.timeCCingOthers}<div/>
+      <div>Time Spent Ccing Others: {info.timeCCingOthers}</div>
       <div>This is the equivalent to getting hit by {Math.round(100*(info.timeCCingOthers / 3)) / 100} Morgana Q's.</div>
 
       <div>Friendly reminder that killing champions isn't the only way to obtain gold</div>
