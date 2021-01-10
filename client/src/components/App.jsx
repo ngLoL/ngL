@@ -87,9 +87,11 @@ const App = () => {
   const getSummonerInfo = (summonerName) => {
     axios.get(`/summoner/${summonerName}`)
       .then((results) => {
+        const championName = getChampionName(results.data.mostChampionId);
+        setMostPlayedChampionName(championName)
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
   };
 
