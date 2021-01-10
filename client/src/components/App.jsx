@@ -63,6 +63,8 @@ const App = () => {
   function getSummonerInfo(summonerName) {
     axios.get(`/summoner/${summonerName}`)
       .then((results) => {
+        console.log(results.data.mostChampionId)
+        setSummonerName(getChampionName(results.data.mostChampionId))
       })
       .catch((err) => {
         console.error(err);
