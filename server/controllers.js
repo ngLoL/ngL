@@ -9,25 +9,25 @@ function countNumRankGames(queues) {
   return 0;
 }
 
-function getMostPlayedChamp(matchHistory) {
-  const playedChampions = {};
+// function getMostPlayedChamp(matchHistory) {
+//   const playedChampions = {};
 
-  for (let j = 0; j < matchHistory.length; j++) {
-    let champion = matchHistory[j].champion;
+//   for (let j = 0; j < matchHistory.length; j++) {
+//     let champion = matchHistory[j].champion;
 
-    if (!playedChampions[champion]) {
-      playedChampions[champion] = 1;
-    } else { playedChampions[champion]++; }
-  }
+//     if (!playedChampions[champion]) {
+//       playedChampions[champion] = 1;
+//     } else { playedChampions[champion]++; }
+//   }
 
-  return Object.keys(playedChampions).reduce((a, b) => playedChampions[a] > playedChampions[b] ? a : b);
-}
+//   return Object.keys(playedChampions).reduce((a, b) => playedChampions[a] > playedChampions[b] ? a : b);
+// }
 
 module.exports = {
 
   getEntries: (dataObj, api_key) => {
-    const { name, id, accountId } = dataObj.data;
-    const finalInfo = { summonerName: name };
+    const { id, accountId, profileIconId } = dataObj.data;
+    const finalInfo = { profileIconId };
     return Promise.all([finalInfo, accountId, axios.get(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${api_key}`)]);
   },
 
@@ -47,11 +47,10 @@ module.exports = {
     const [finalInfo, dataObj] = dataArr;
     let matchHistory = dataObj.data.matches;
 
-    const mostChampionId = getMostPlayedChamp(matchHistory);
-
+    const championIds = matchHistory.map(match => match.champion);
     const matchStorage = matchHistory.map(match => axios.get(`https://na1.api.riotgames.com/lol/match/v4/matches/${match.gameId}?api_key=${api_key}`));
 
-    return Promise.all([{ ...finalInfo, mostChampionId }, ...matchStorage]);
+    return Promise.all([{ ...finalInfo}, championIds, ...matchStorage]);
   },
 
 };

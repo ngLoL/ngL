@@ -90,14 +90,15 @@ const App = () => {
 
 
   useEffect(() => {
-    getSummonerInfo('Iceh');
+    getSummonerInfo('Islamic Salesman');
   }, []);
 
   const getSummonerInfo = (summonerName) => {
     axios.get(`/summoner/${summonerName}`)
       .then((results) => {
-        const championName = getChampionName(results.data.mostChampionId);
-        setInfo({ ...info, mostPlayedChampion: championName})
+        // const championName = getChampionName(results.data.mostChampionId);
+        // setInfo({ ...info, mostPlayedChampion: championName});
+        console.log(results.data);
       })
       .catch((err) => {
         console.log(err);
