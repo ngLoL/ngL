@@ -81,18 +81,15 @@ const App = () => {
 
 
   useEffect(() => {
-    getSummonerInfo('Iceh');
+    getSummonerInfo('Islamic Salesman');
   }, []);
 
   const getSummonerInfo = (summonerName) => {
     axios.get(`/summoner/${summonerName}`)
       .then((results) => {
-        const championName = getChampionName(results.data.mostChampionId);
-<<<<<<< HEAD
-        setInfo({mostPlayedChampionName: championName})
-=======
-        setInfo({ ...info, mostPlayedChampion: championName})
->>>>>>> 1e6e3912e9f0cef967bbba92f31859b4cc75e2ea
+        // const championName = getChampionName(results.data.mostChampionId);
+        // setInfo({ ...info, mostPlayedChampion: championName});
+        console.log(results.data);
       })
       .catch((err) => {
         console.log(err);
