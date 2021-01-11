@@ -34,7 +34,7 @@ app.get('/summoner/:summonerName', (req, res) => {
         winsUnder30: 0,
         winsUnder40: 0,
         winsPast40: 0,
-      }
+      };
 
       let maxKillSpree = 0;
       let maxKillSpreeChampId = 0;
@@ -45,8 +45,9 @@ app.get('/summoner/:summonerName', (req, res) => {
       let totalFirstBloods = 0;
 
       const championStats = {};
+      const enemyChampionStats = {};
 
-      let length = matches.length;
+      let length = matches.length / 2;
       for (let i = 0; i < length; i++) {
         const { gameDuration, teams, participants, gameId } = matches[i].data;
         const userChamp = championIds[i];
@@ -66,19 +67,35 @@ app.get('/summoner/:summonerName', (req, res) => {
           };
         }
 
+        // enemyChampionStats
+
+        // enemyPartToChamp
+        const partToChamp = {};
+
         let userStats;
         let userTeam;
+        let enemyTeam;
+        let userPartId;
         const teamsDamage = {
           100: 0,
           200: 0,
         };
+        const champsByTeam = {
+          100: [],
+          200: [],
+        }
 
         for (let participant of participants) {
-          if (participant.championId == userChamp) {
-            userStats = participant.stats;
-            userTeam = participant.teamId;
+          const { stats, teamId, participantId, championId } = participant;
+          if (championId == userChamp) {
+            userStats = stats;
+            userTeam = teamId;
+            enemyTeam = teamId == 100 ? 200 : 100;
+            userPartId = participantId;
           }
-          teamsDamage[participant.teamId] += participant.stats.totalDamageDealtToChampions;
+          partToChamp[participantId] = championId;
+          teamsDamage[teamId] += stats.totalDamageDealtToChampions;
+          champsByTeam[teamId].push(championId);
         }
 
         const { win, kills, deaths, assists, totalMinionsKilled, neutralMinionsKilled, totalDamageDealtToChampions, largestKillingSpree, visionScore, longestTimeSpentLiving, timeCCingOthers, visionWardsBoughtInGame, firstBloodKill, firstBloodAssist } = userStats;
@@ -118,10 +135,45 @@ app.get('/summoner/:summonerName', (req, res) => {
         }
         totalTimeCCingOthers += timeCCingOthers;
         if (firstBloodKill || firstBloodAssist) { totalFirstBloods++; }
+
+        // update enemyChampionStats for each enemy champion in this match
+        for (let i = 0; i < 5; i++) {
+          const enemyChamp = champsByTeam[enemyTeam][i];
+          if (!enemyChampionStats[enemyChamp]) {
+            enemyChampionStats[enemyChamp] = {
+              totalGames: 0,
+              wins: 0,
+              killsOn: 0,
+              killsBy: 0,
+            }
+          }
+          enemyChampionStats[enemyChamp].totalGames++;
+          if (win) { enemyChampionStats[enemyChamp].wins++; }
+        }
+
+
+        // go through each frame, each event
+        // if the event is CHAMPION_KILL, and user was involved.
+        // then record killsOn or killsBy accordingly
+        const timeline = matches[i + length].data;
+        const { frames } = timeline;
+        for (const frame of frames) {
+          const { events } = frame;
+          for (const event of events) {
+            const { type, killerId, victimId } = event;
+            if (type == "CHAMPION_KILL") {
+              if (killerId == userPartId || victimId == userPartId) {
+                const enemyPart = killerId == userPartId ? victimId : killerId;
+                const enemyChamp = partToChamp[enemyPart];
+                if (enemyPart == victimId) { enemyChampionStats[enemyChamp].killsOn++; }
+                else { enemyChampionStats[enemyChamp].killsBy++; }
+              }
+            }
+          }
+        }
       }
 
-      let match = matches[0].data;
-      res.status(200).send({...finalInfo, gameDurationInIntervals, championStats, maxKillSpree, maxKillSpreeChampId, maxKillSpreeMatchId, totalVisionScore, maxTimeLiving, totalTimeCCingOthers, totalFirstBloods});
+      res.status(200).send({ ...finalInfo, gameDurationInIntervals, championStats, maxKillSpree, maxKillSpreeChampId, maxKillSpreeMatchId, totalVisionScore, maxTimeLiving, totalTimeCCingOthers, totalFirstBloods, enemyChampionStats });
     })
     .catch(err => {
       res.status(400).send(err);

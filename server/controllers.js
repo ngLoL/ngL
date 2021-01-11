@@ -40,7 +40,7 @@ module.exports = {
       throw new Error(`You don't have enough ranked solo games played`);
     }
 
-    return Promise.all([{ ...finalInfo, numRankGames }, axios.get(`https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&endIndex=10&beginIndex=0&api_key=${api_key}`)]);
+    return Promise.all([{ ...finalInfo, numRankGames }, axios.get(`https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&endIndex=3&beginIndex=0&api_key=${api_key}`)]);
   },
 
   getMatches: (dataArr, api_key) => {
@@ -49,8 +49,9 @@ module.exports = {
 
     const championIds = matchHistory.map(match => match.champion);
     const matchStorage = matchHistory.map(match => axios.get(`https://na1.api.riotgames.com/lol/match/v4/matches/${match.gameId}?api_key=${api_key}`));
+    const matchTimelines = matchHistory.map(match => axios.get(`https://na1.api.riotgames.com/lol/match/v4/timelines/by-match/${match.gameId}?api_key=${api_key}`));
 
-    return Promise.all([{ ...finalInfo}, championIds, ...matchStorage]);
+    return Promise.all([{ ...finalInfo}, championIds, ...matchStorage, ...matchTimelines]);
   },
 
 };
