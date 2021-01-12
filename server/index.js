@@ -36,6 +36,7 @@ app.get('/summoner/:summonerName', (req, res) => {
         winsPast40: 0,
       };
 
+      let totalTeamScore = 0;
       let maxKillSpree = 0;
       let maxKillSpreeChampId = 0;
       let maxKillSpreeMatchId = 0;
@@ -80,14 +81,9 @@ app.get('/summoner/:summonerName', (req, res) => {
         let enemyTeam;
         let userPartId;
         const partToChamp = {};
-        const teamsDamage = {
-          100: 0,
-          200: 0,
-        };
-        const champsByTeam = {
-          100: [],
-          200: [],
-        }
+        const teamsDamage = { 100: 0, 200: 0 };
+        const champsByTeam = { 100: [], 200: [] };
+        const teamsKills = { 100: 0, 200: 0 };
 
         for (let participant of participants) {
           const { stats, teamId, participantId, championId } = participant;
@@ -99,6 +95,7 @@ app.get('/summoner/:summonerName', (req, res) => {
           }
           partToChamp[participantId] = championId;
           teamsDamage[teamId] += stats.totalDamageDealtToChampions;
+          teamsKills[teamId] += stats.kills;
           champsByTeam[teamId].push(championId);
         }
 
@@ -133,6 +130,7 @@ app.get('/summoner/:summonerName', (req, res) => {
         }
 
         // update visionScore, maxTimeLiving, timeCCingOthers, firstBloods, goldEarned/goldSpent
+        totalTeamScore += teamsKills[userTeam];
         totalVisionScore += visionScore;
         const longestTimeSpentLivingInGame = longestTimeSpentLiving == 0 ? gameDuration : longestTimeSpentLiving;
         if (longestTimeSpentLivingInGame > maxTimeLiving) {
@@ -187,10 +185,10 @@ app.get('/summoner/:summonerName', (req, res) => {
 
       let match = matches[0].data;
 
-      res.status(200).send({ ...finalInfo, gameDurationInIntervals, championStats, maxKillSpree, maxKillSpreeChampId, maxKillSpreeMatchId, totalVisionScore, maxTimeLiving, maxTimeLivingChampId, maxTimeLivingMatchId, totalTimeCCingOthers, totalWinsWithFirstBloods, totalFirstBloods, enemyChampionStats, totalGoldEarned, totalGoldSpent, totalDoubleKills, totalTripleKills, totalQuadraKills, match });
+      res.status(200).send({ ...finalInfo, gameDurationInIntervals, championStats, maxKillSpree, maxKillSpreeChampId, maxKillSpreeMatchId, totalVisionScore, maxTimeLiving, maxTimeLivingChampId, maxTimeLivingMatchId, totalTimeCCingOthers, totalWinsWithFirstBloods, totalFirstBloods, enemyChampionStats, totalGoldEarned, totalGoldSpent, totalDoubleKills, totalTripleKills, totalQuadraKills, totalTeamScore, match });
     })
     .catch(err => {
-      console.log(err);
+      console.log(err.data);
       res.status(400).json(err.message);
     });
 });
