@@ -63,25 +63,27 @@ const App = () => {
   const getSummonerInfo = (summonerName) => {
     axios.get(`/summoner/${summonerName}`)
       .then((results) => {
+        console.log(results.data);
         const sortByMostPlayed = [];
         const championStats = results.data.championStats;
+        let killByTim = 0;
         for (const champId in championStats) {
           let champObj = championStats[champId];
           champObj.champId = champId;
           sortByMostPlayed.push(champObj);
-          setInfo({
-            ...info,
-            kills: info.kills + championStats[champId].totalKills,
-            deaths: info.deaths + championStats[champId].totalDeaths,
-            assists: info.assists + championStats[champId].totalAssists,
-            gameDuration: info.gameDuration + championStats[champId].totalGameDuration,
-            numWins: info.numWins + championStats[champId].numWins,
-            cs: info.cs + championStats[champId].totalCs,
-            totalDamageToChamps: info.totalDamageToChamps + championStats[champId].totalDamageToChamps,
-            totalTeamDamage: info.totalTeamDamage + championStats[champId].totalTeamDamageToChamps,
-          });
+          killByTim += championStats[champId].totalKills;
+          // setInfo({
+          //   ...info,
+          //   kills: info.kills + championStats[champId].totalKills,
+          //   deaths: info.deaths + championStats[champId].totalDeaths,
+          //   assists: info.assists + championStats[champId].totalAssists,
+          //   gameDuration: info.gameDuration + championStats[champId].totalGameDuration,
+          //   numWins: info.numWins + championStats[champId].numWins,
+          //   cs: info.cs + championStats[champId].totalCs,
+          //   totalDamageToChamps: info.totalDamageToChamps + championStats[champId].totalDamageToChamps,
+          //   totalTeamDamage: info.totalTeamDamage + championStats[champId].totalTeamDamageToChamps,
+          // });
         }
-        console.log(info.kills);
 
         sortByMostPlayed.sort((a, b) => {
           if (a.numGames > b.numGames) {
@@ -89,30 +91,30 @@ const App = () => {
           }
         }).slice(0, 3);
 
-        setInfo({
-          ...info,
-          summonerName: summonerName,
-          gamesUnder20: results.data.gameDurationInIntervals.gamesUnder20,
-          gamesUnder30: results.data.gameDurationInIntervals.gamesUnder30,
-          gamesUnder40: results.data.gameDurationInIntervals.gamesUnder40,
-          gamesPast40: results.data.gameDurationInIntervals.gamesPast40,
-          winsUnder20: results.data.gameDurationInIntervals.winsUnder20,
-          winsUnder30: results.data.gameDurationInIntervals.winsUnder30,
-          winsUnder40: results.data.gameDurationInIntervals.winsUnder40,
-          winsPast40: results.data.gameDurationInIntervals.winsPast40,
-          largestKillingSpree: results.data.maxKillSpree,
-          largestKillingSpreeChamp: results.data.maxKillSpreeChampId,
-          largestKillingSpreeMatchId: results.data.maxKillSpreeMatchId,
-          longestTimeSpentLiving: results.data.maxTimeLiving,
-          numGames: results.data.numRankGames,
-          profileIconId: results.data.profileIconId,
-          numFirstBlood: results.data.totalFirstBloods,
-          timeCCingOthers: results.data.totalTimeCCingOthers,
-          visionScore: results.data.totalVisionScore,
-          favoriteChamps: sortByMostPlayed,
-        });
-        console.log(sortByMostPlayed);
-        console.log(results.data);
+        // setInfo({
+        //   ...info,
+        //   summonerName: summonerName,
+        //   gamesUnder20: results.data.gameDurationInIntervals.gamesUnder20,
+        //   gamesUnder30: results.data.gameDurationInIntervals.gamesUnder30,
+        //   gamesUnder40: results.data.gameDurationInIntervals.gamesUnder40,
+        //   gamesPast40: results.data.gameDurationInIntervals.gamesPast40,
+        //   winsUnder20: results.data.gameDurationInIntervals.winsUnder20,
+        //   winsUnder30: results.data.gameDurationInIntervals.winsUnder30,
+        //   winsUnder40: results.data.gameDurationInIntervals.winsUnder40,
+        //   winsPast40: results.data.gameDurationInIntervals.winsPast40,
+        //   largestKillingSpree: results.data.maxKillSpree,
+        //   largestKillingSpreeChamp: results.data.maxKillSpreeChampId,
+        //   largestKillingSpreeMatchId: results.data.maxKillSpreeMatchId,
+        //   longestTimeSpentLiving: results.data.maxTimeLiving,
+        //   numGames: results.data.numRankGames,
+        //   profileIconId: results.data.profileIconId,
+        //   numFirstBlood: results.data.totalFirstBloods,
+        //   timeCCingOthers: results.data.totalTimeCCingOthers,
+        //   visionScore: results.data.totalVisionScore,
+        //   favoriteChamps: sortByMostPlayed,
+        // });
+        // console.log(sortByMostPlayed);
+        // console.log(results.data);
       })
       .catch((err) => {
         console.log(err.response.data);
