@@ -66,7 +66,7 @@ const App = () => {
         const mostPlayed = [];
         let mostDiedTo = { killsBy: 0 };
         let mostKilled = { killsOn: 0 };
-        let worstWinRate = { currentWinRate: 100 };
+        let worstWinRate = { currentWinRate: 1 };
         let bestWinRate = { currentWinRate: 0 };
         const yourOverallStats = {
           kills: 0,
