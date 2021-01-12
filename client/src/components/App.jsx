@@ -168,6 +168,7 @@ const App = () => {
           worstWinrateAgainstChampionPercentage: worstWinRate.currentWinRate,
           bestWinrateAgainstChampionId: bestWinRate.champId,
           bestWinrateAgainstChampionPercentage: bestWinRate.currentWinRate,
+          numTeamKills: results.data.totalTeamScore,
         });
 
         console.log(results.data);
@@ -240,11 +241,11 @@ const App = () => {
 
       <div>We all have bad days. Yours start when you see someone lock in this champ</div>
       <div>Died to {getChampionName(info.mostDiedToChampionId)} the most. {info.mostDiedToChampionDeaths} times</div>
-      <div>Worst Winrate Against {getChampionName(info.worstWinrateAgainstChampionId)} at {info.worstWinrateAgainstChampionPercentage}</div>
+      <div>Worst Winrate Against {getChampionName(info.worstWinrateAgainstChampionId)} at {info.worstWinrateAgainstChampionPercentage * 100}%</div>
 
       <div>On the other hand, here are the times you can play with ONE hand... haha (I'm sorry)</div>
       <div>Killed {getChampionName(info.mostKilledChampionId)} the most. {info.mostKilledChampionKills} times</div>
-      <div>Best Winrate Against {getChampionName(info.bestWinrateAgainstChampionId)} at {info.bestWinrateAgainstChampionPercentage}</div>
+      <div>Best Winrate Against {getChampionName(info.bestWinrateAgainstChampionId)} at {info.bestWinrateAgainstChampionPercentage * 100}%</div>
 
       <SearchBar />
     </div>
