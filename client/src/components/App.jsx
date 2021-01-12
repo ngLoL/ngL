@@ -90,7 +90,7 @@ const App = () => {
 
 
   useEffect(() => {
-    getSummonerInfo('Islamic Salesman');
+    getSummonerInfo('Iceh');
   }, []);
 
   const getSummonerInfo = (summonerName) => {
@@ -101,7 +101,7 @@ const App = () => {
         console.log(results.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response.data);
       });
   };
 
