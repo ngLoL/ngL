@@ -56,6 +56,8 @@ app.get('/summoner/:summonerName', (req, res) => {
       const championStats = {};
       const enemyChampionStats = {};
 
+      // first half of ...matches: match infos
+      // second half: match timelines
       let length = matches.length / 2;
       for (let i = 0; i < length; i++) {
         const { gameDuration, teams, participants, gameId } = matches[i].data;

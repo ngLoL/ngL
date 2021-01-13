@@ -5,8 +5,9 @@ const Splash = (props) => {
   const StyledSplashHeading = styled.div`
     background-image: url('https://nglol.s3-us-west-1.amazonaws.com/champion/splash/${props.mostChampionName}_0.jpg');
     background-repeat: no-repeat;
-    height: 400px;
-    color: white;
+    background-size: contain;
+    width: 100vw;
+    height: 600px;
   `;
   const StyledSplashSummonerName = styled.h2`
     font-family: 'Roboto', san-serif;
@@ -14,7 +15,7 @@ const Splash = (props) => {
   return (
     <div id="splash">
       <StyledSplashHeading></StyledSplashHeading>
-      <StyledSplashSummonerName></StyledSplashSummonerName>
+      <StyledSplashSummonerName>Hello</StyledSplashSummonerName>
     </div>
   );
 }

@@ -124,6 +124,7 @@ const App = () => {
         setInfo({
           ...info,
           summonerName: summonerName,
+          mostPlayedChampion: mostPlayed[0].champId,
           kills: yourOverallStats.kills,
           deaths: yourOverallStats.deaths,
           assists: yourOverallStats.assists,
@@ -185,7 +186,7 @@ const App = () => {
 
   return (
     <div>
-      {info.mostPlayedChampion != 0 && <Splash mostChampionName={info.mostPlayedChampion} />}
+      {info.mostPlayedChampion && <Splash mostChampionName={getChampionName(info.mostPlayedChampion)} />}
       <div>Summoner Name: {info.summonerName}</div>
 
       {/* number 4  hollisticstats.jsx */}
@@ -195,6 +196,9 @@ const App = () => {
       <div>Avg Deaths: {Math.round(100*(info.deaths / info.numGames)) / 100}</div>
       <div>Avg Assists: {Math.round(100*(info.assists / info.numGames)) / 100}</div>
       <div>Avg CS/min: {Math.round(100*(info.cs / (info.gameDuration / 60))) / 100}</div>
+
+      {/*Pentagon.jsx*/}
+      <div>Have you ever dreamed of becoming Faker?</div>
 
       <div>Now here are more mildly interesting stats</div>
 
