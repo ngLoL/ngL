@@ -188,6 +188,7 @@ const App = () => {
       {info.mostPlayedChampion != 0 && <Splash mostChampionName={info.mostPlayedChampion} />}
       <div>Summoner Name: {info.summonerName}</div>
 
+      {/* number 4  hollisticstats.jsx */}
       <div>We'll give the boring stuff first.</div>
       <div>Avg KDA: {Math.round(100*((info.kills + info.assists) / info.deaths)) / 100}</div>
       <div>Avg Kills: {Math.round(100*(info.kills / info.numGames)) / 100}</div>
@@ -197,52 +198,65 @@ const App = () => {
 
       <div>Now here are more mildly interesting stats</div>
 
+      {/* number 5  favoriteChamps.jsx*/}
+
       <div>You seem to like these champs a lot, but how good at them are you exactly?</div>
       <div>{}</div>
       <div>{}</div>
       <div>{}</div>
 
+      {/* number 7 multikills.jsx */}
+
       <div>Are you good at last hitting?</div>
       <div>Double Kills:{info.doubleKills || 0} Triple Kill: {info.tripleKills || 0} QuadraKills: {info.quadraKills || 0} PentaKills: {info.pentaKills || 0}</div>
 
+      {/* timeVswins.jsx */}
       <div>Early finisher, mid-game monster, or a late game degenerate</div>
       <div>Games won under 20 min: {gamesUnder20}%</div>
       <div>Games won from 20 to 30 min: {gamesUnder30}%</div>
       <div>Games won from 30 to 40 min: {gamesUnder40}%</div>
       <div>Games won past 40 min: {gamesPast40}%</div>
 
+      {/* visionScore.jsx */}
       <div>Just to show that supports are more than just wards these days. They are also this.</div>
       <div>Avg Vision Score: {Math.round(100*(info.visionScore / info.numGames)) / 100}</div>
 
+      {/* kp.jsx */}
       <div>Reminder: League is a team game.</div>
       <div>Avg KP: {Math.round(100*((info.kills + info.assists) / info.numTeamKills))}%</div>
 
+      {/* dmgPercent.jsx */}
       <div>Let's be honest about how much you contributed though.</div>
       <div>Avg Percentage of Team Damage: {Math.round(100*(info.totalDamageToChamps / info.totalTeamDamage))}%</div>
 
+      {/* timeLiving.jsx */}
       <div>Longest time you went without seeing the gray screen</div>
       <div>Stayed Alive for {Math.floor(info.longestTimeSpentLiving / 60)} minutes and {Math.floor(info.longestTimeSpentLiving % 60)} seconds as {getChampionName(info.longestTimeSpentLivingChampId)}</div>
       <div>Glad to know you weren't that bad for one game. Here's the match history if you're curious: {info.longestTimeSpentLivingMatchId}</div>
 
+      {/* gold.jsx */}
       <div>What Riot should actually be putting in the loading screen.</div>
       <div>Fun fact: gold you don't spend doesn't transfer to the next game.</div>
       <div>Gold wasted: {info.goldEarned - info.goldSpent}</div>
 
+      {/* timecced.jsx */}
       <div>This is the amount of time you didn't let others play League of Legends. Poor soul(s)</div>
       <div>Time Spent Ccing Others: {Math.floor(info.timeCCingOthers / 60)} minutes and {Math.floor(info.timeCCingOthers % 60)} seconds</div>
       <div>This is the equivalent to getting hit by {Math.floor(info.timeCCingOthers / 3)} Morgana Q's.</div>
 
+      {/* firstBlood.jsx */}
       <div>Were you able to translate your first blood kill to a win?</div>
       <div>Amount of First Bloods that resulted in a win: {Math.round(100*(info.winsWithFirstBlood / info.numFirstBlood)) / 100}</div>
 
+      {/* killspree.jsx */}
       <div>Did someone kill your puppy Mr. Wick?</div>
       <div>Largest Killing Spree: {info.largestKillingSpree} with {getChampionName(info.largestKillingSpreeChamp)}</div>
       <div>Check out your match history here: {info.largestKillingSpreeMatchId}</div>
 
+      {/* bestAndWorst.jsx  number 8 */}
       <div>We all have bad days. Yours start when you see someone lock in this champ</div>
       <div>Died to {getChampionName(info.mostDiedToChampionId)} the most. {info.mostDiedToChampionDeaths} times</div>
       <div>Worst Winrate Against {getChampionName(info.worstWinrateAgainstChampionId)} at {info.worstWinrateAgainstChampionPercentage * 100}%</div>
-
       <div>On the other hand, here are the times you can play with ONE hand... haha (I'm sorry)</div>
       <div>Killed {getChampionName(info.mostKilledChampionId)} the most. {info.mostKilledChampionKills} times</div>
       <div>Best Winrate Against {getChampionName(info.bestWinrateAgainstChampionId)} at {info.bestWinrateAgainstChampionPercentage * 100}%</div>
