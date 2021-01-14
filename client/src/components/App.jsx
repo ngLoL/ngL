@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 import {getChampionName} from '../../../champion-library/helper.js';
 import Splash from './Splash.jsx';
 import SearchBar from './SearchBar.jsx';
@@ -260,8 +261,6 @@ const App = () => {
       <div>On the other hand, here are the times you can play with ONE hand... haha (I'm sorry)</div>
       <div>Killed {getChampionName(info.mostKilledChampionId)} the most. {info.mostKilledChampionKills} times</div>
       <div>Best Winrate Against {getChampionName(info.bestWinrateAgainstChampionId)} at {info.bestWinrateAgainstChampionPercentage * 100}%</div>
-
-      <SearchBar />
     </div>
   );
 }
