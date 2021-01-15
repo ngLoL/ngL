@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import {getChampionName} from '../../../champion-library/helper.js';
+import { getChampionName } from '../../../champion-library/helper.js';
 import Splash from './Splash.jsx';
 import SearchBar from './SearchBar.jsx';
 
 const App = () => {
+  const StyledApp = styled.div`
+    width: 1000px;
+    margin: auto;
+  `;
   const [info, setInfo] = useState({
     summonerName: '',
     isLoading: false,
@@ -58,7 +62,7 @@ const App = () => {
 
 
   useEffect(() => {
-    getSummonerInfo('Iceh');
+    getSummonerInfo('Islamic Salesman');
   }, []);
 
   const getSummonerInfo = (summonerName) => {
@@ -186,9 +190,8 @@ const App = () => {
   const gamesPast40 = Math.round(100*(info.winsPast40 / info.gamesPast40));
 
   return (
-    <div>
-      {info.mostPlayedChampion && <Splash mostChampionName={getChampionName(info.mostPlayedChampion)} />}
-      <div>Summoner Name: {info.summonerName}</div>
+    <StyledApp>
+      {info.mostPlayedChampion && <Splash summonerName={info.summonerName.toUpperCase()} profileIconId={info.profileIconId} mostChampionName={getChampionName(info.mostPlayedChampion)} />}
 
       {/* number 4  hollisticstats.jsx */}
       <div>We'll give the boring stuff first.</div>
@@ -265,7 +268,7 @@ const App = () => {
       <div>On the other hand, here are the times you can play with ONE hand... haha (I'm sorry)</div>
       <div>Killed {getChampionName(info.mostKilledChampionId)} the most. {info.mostKilledChampionKills} times</div>
       <div>Best Winrate Against {getChampionName(info.bestWinrateAgainstChampionId)} at {info.bestWinrateAgainstChampionPercentage * 100}%</div>
-    </div>
+    </StyledApp>
   );
 }
 

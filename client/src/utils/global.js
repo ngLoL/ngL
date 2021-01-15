@@ -37,6 +37,7 @@ export default createGlobalStyle`
     font-family: 'Cardo', serif;
     font-weight: 400;
     line-height: 1.6;
+    margin: auto;
   }
   a, button {
     cursor: pointer;
