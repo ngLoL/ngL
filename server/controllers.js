@@ -9,20 +9,6 @@ function countNumRankGames(queues) {
   return 0;
 }
 
-// function getMostPlayedChamp(matchHistory) {
-//   const playedChampions = {};
-
-//   for (let j = 0; j < matchHistory.length; j++) {
-//     let champion = matchHistory[j].champion;
-
-//     if (!playedChampions[champion]) {
-//       playedChampions[champion] = 1;
-//     } else { playedChampions[champion]++; }
-//   }
-
-//   return Object.keys(playedChampions).reduce((a, b) => playedChampions[a] > playedChampions[b] ? a : b);
-// }
-
 module.exports = {
 
   getEntries: (dataObj, api_key) => {
