@@ -40,4 +40,8 @@ module.exports = {
     return Promise.all([{ ...finalInfo}, championIds, ...matchStorage, ...matchTimelines]);
   },
 
+  getGameStats: (dataArr, api_key) => {
+
+  },
+
 };
