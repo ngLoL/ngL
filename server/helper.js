@@ -2,7 +2,7 @@ module.exports = {
 
   countNumRankGames: (queues) => {
     for (let i = 0; i < queues.length; i++) {
-      if (queues[i].queueType === "RANKED_SOLO_5x5") {
+      if (queues[i].queueType == "RANKED_SOLO_5x5") {
         return queues[i].wins + queues[i].losses;
       }
     }

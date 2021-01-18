@@ -100,7 +100,9 @@ module.exports = {
       updateUserVsEnemyKills(gameStats, timeline, userPartId, partToChamp);
     }
 
-    return ({ ...finalInfo, ...gameStats });
+    const match = matches[0].data;
+
+    return ({ ...finalInfo, ...gameStats, match });
   },
 
 };
