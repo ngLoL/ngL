@@ -26,7 +26,13 @@ app.get('/summoner/:summonerName', (req, res) => {
     .then(datas => getMatches(datas, api_key))
     .then(datas => getGameStats(datas))
     .then(result => res.status(200).send(result))
-    .catch(err => res.status(400).json(err.message));
+    .catch(err => {
+      if (err.response) {
+        res.status(err.response.status).send(err)
+      } else {
+        res.status(400).json(err.message);
+      }
+    });
 });
 
 app.listen(port, () => console.log(`currently listening on localhost:${port}`));
