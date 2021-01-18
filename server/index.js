@@ -21,15 +21,12 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.get('/summoner/:summonerName', (req, res) => {
   axios.get(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${req.params.summonerName}?api_key=${api_key}`)
-    .then((data) => getEntries(data, api_key))
-    .then((datas) => getMatchHistory(datas, api_key))
-    .then((datas) => getMatches(datas, api_key))
-    .then((datas) => getGameStats(datas))
-    .then((result) => res.status(200).send(result))
-    .catch(err => {
-      console.log(err.data);
-      res.status(400).json(err.message);
-    });
+    .then(data => getEntries(data, api_key))
+    .then(datas => getMatchHistory(datas, api_key))
+    .then(datas => getMatches(datas, api_key))
+    .then(datas => getGameStats(datas))
+    .then(result => res.status(200).send(result))
+    .catch(err => res.status(400).json(err.message));
 });
 
 app.listen(port, () => console.log(`currently listening on localhost:${port}`));

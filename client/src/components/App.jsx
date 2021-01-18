@@ -62,7 +62,7 @@ const App = () => {
 
 
   useEffect(() => {
-    getSummonerInfo('Islamic Salesman');
+    getSummonerInfo('Iceh');
   }, []);
 
   const getSummonerInfo = (summonerName) => {
