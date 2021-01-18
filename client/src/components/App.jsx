@@ -62,7 +62,7 @@ const App = () => {
 
 
   useEffect(() => {
-    getSummonerInfo('Iceh');
+    getSummonerInfo('Jeongmo');
   }, []);
 
   const getSummonerInfo = (summonerName) => {
@@ -177,10 +177,14 @@ const App = () => {
           numTeamKills: results.data.totalTeamScore,
         });
 
-        console.log(results.data);
+        // console.log(results.data);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status == 400) {
+          alert(err.response.data);
+        } else if (err.response.status == 404) {
+          alert('Summoner does not exist');
+        }
       });
   };
 
