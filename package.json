@@ -4,7 +4,7 @@
   "description": "League of Legends Application",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watchAll",
     "build": "webpack",
     "build:dev": "webpack --watch",
     "start:dev": "nodemon server/index.js",

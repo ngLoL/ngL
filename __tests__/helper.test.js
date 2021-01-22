@@ -1,7 +1,6 @@
 const { countNumRankGames, gameStatsTemplate, champStatsTemplate, updateChampStats, updateGameDuration, updateGlobalGameStats, updateUserVsEnemyKills } = require('../server/helper.js');
 
 describe("countNumRankGames function", () => {
-
   test("it should handle empty array argument", () => {
     expect(countNumRankGames([])).toEqual(0);
   });
