@@ -74,6 +74,8 @@ describe("updateChampStats function", () => {
     expect(lostGameStats.championStats[lostUserChampId].numWins).toEqual(0);
   });
 
+  test("it should ")
+
 });
 
 describe("updateGameDuration function", () => {
