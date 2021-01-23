@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { getChampionName } from '../../../champion-library/helper.js';
 import Splash from './Splash.jsx';
+import Hexagon from './Hexagon.jsx';
 import SearchBar from './SearchBar.jsx';
 
 const App = () => {
@@ -205,8 +206,9 @@ const App = () => {
       <div>Avg Assists: {Math.round(100*(info.assists / info.numGames)) / 100}</div>
       <div>Avg CS/min: {Math.round(100*(info.cs / (info.gameDuration / 60))) / 100}</div>
 
-      {/*Pentagon.jsx*/}
+      {/*Hexagon.jsx*/}
       <div>Have you ever dreamed of becoming Faker?</div>
+      <Hexagon kda={(info.kills + info.assists)/info.deaths} cs={Math.round(100*(info.cs / (info.gameDuration / 60))) / 100} winRate={Math.round(100*(info.numWins / 3))} killParticipation={Math.round(100*((info.kills + info.assists)/info.numTeamKills))} teamDamage={Math.round(100*(info.totalDamageToChamps / info.totalTeamDamage))} visionScore={Math.round(100*(info.visionScore / (info.gameDuration / 60))) / 100}/>
 
       <div>Now here are more mildly interesting stats</div>
 
