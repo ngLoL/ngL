@@ -62,7 +62,7 @@ const App = () => {
 
 
   useEffect(() => {
-    getSummonerInfo('Jeongmo');
+    getSummonerInfo('Iceh');
   }, []);
 
   const getSummonerInfo = (summonerName) => {
