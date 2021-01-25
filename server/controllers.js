@@ -74,7 +74,7 @@ module.exports = {
 
       updateChampStats(gameStats, userChamp, userStats, teamsDamage[userTeam]);
 
-      updateGameDuration(gameStats, gameDuration, win);
+      updateGameDuration(gameStats, userChamp, gameDuration, win);
 
       if (largestKillingSpree > gameStats.maxKillSpree) {
         updateKillSpree(gameStats, largestKillingSpree, userChamp, gameId);
