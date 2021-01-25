@@ -37,6 +37,7 @@ module.exports = {
       totalDoubleKills: 0,
       totalTripleKills: 0,
       totalQuadraKills: 0,
+      totalPentaKills: 0,
       championStats: {},
       enemyChampionStats: {},
     };
@@ -68,7 +69,6 @@ module.exports = {
   updateChampStats: (gameStats, champ, stats, teamDamage) => {
     let { championStats } = gameStats;
     const { gameDuration, win, kills, deaths, assists, totalMinionsKilled, neutralMinionsKilled, totalDamageDealtToChampions } = stats;
-    championStats[champ].totalGameDuration += gameDuration;
     championStats[champ].numGames++;
     if (win) { championStats[champ].numWins++; }
     championStats[champ].totalKills += kills;
@@ -79,8 +79,9 @@ module.exports = {
     championStats[champ].totalTeamDamageToChamps += teamDamage;
   },
 
-  updateGameDuration: (gameStats, gameDuration, win) => {
-    let { gameDurationInIntervals } = gameStats;
+  updateGameDuration: (gameStats, champ, gameDuration, win) => {
+    let { gameDurationInIntervals, championStats } = gameStats;
+    championStats[champ].totalGameDuration += gameDuration;
     let minutes = gameDuration < 1200 ? 20 : Math.ceil(gameDuration / 600) * 10;
     if (minutes > 40) {
       gameDurationInIntervals.gamesPast40++;
@@ -106,6 +107,7 @@ module.exports = {
     gameStats.totalDoubleKills += userStats.doubleKills;
     gameStats.totalTripleKills += userStats.tripleKills;
     gameStats.totalQuadraKills += userStats.quadraKills;
+    gameStats.totalPentaKills += userStats.pentaKills;
     gameStats.totalTeamScore += teamScore;
 
     if (userStats.firstBloodKill) {
