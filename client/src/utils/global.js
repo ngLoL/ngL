@@ -34,9 +34,10 @@ export default createGlobalStyle`
     }
   }
   body {
-    font-family: 'Cardo', serif;
+    font-family: 'Roboto', sans-serif;
     font-weight: 400;
     line-height: 1.6;
+    background-color: var(--color-main);
   }
   a, button {
     cursor: pointer;

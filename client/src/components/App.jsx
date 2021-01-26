@@ -4,6 +4,10 @@ import styled from 'styled-components';
 import {getChampionName} from '../../../champion-library/helper.js';
 import Splash from './Splash.jsx';
 import SearchBar from './SearchBar.jsx';
+import HolisticStats from './holisticStats/HolisticStats.jsx';
+import FavChamps from './favChampRoutes/FavChamps.jsx';
+import MultiKills from './multiKills/MultiKills.jsx';
+
 
 const App = () => {
   const [info, setInfo] = useState({
@@ -58,7 +62,7 @@ const App = () => {
 
 
   useEffect(() => {
-    getSummonerInfo('Iceh');
+    getSummonerInfo('TheLastStand');
   }, []);
 
   const getSummonerInfo = (summonerName) => {
@@ -173,7 +177,7 @@ const App = () => {
           numTeamKills: results.data.totalTeamScore,
         });
 
-        console.log(results.data);
+        console.log(results);
       })
       .catch((err) => {
         console.log(err);
@@ -190,30 +194,25 @@ const App = () => {
       {info.mostPlayedChampion && <Splash mostChampionName={getChampionName(info.mostPlayedChampion)} />}
       <div>Summoner Name: {info.summonerName}</div>
 
-      {/* number 4  hollisticstats.jsx */}
-      <div>We'll give the boring stuff first.</div>
-      <div>Avg KDA: {Math.round(100*((info.kills + info.assists) / info.deaths)) / 100}</div>
-      <div>Avg Kills: {Math.round(100*(info.kills / info.numGames)) / 100}</div>
-      <div>Avg Deaths: {Math.round(100*(info.deaths / info.numGames)) / 100}</div>
-      <div>Avg Assists: {Math.round(100*(info.assists / info.numGames)) / 100}</div>
-      <div>Avg CS/min: {Math.round(100*(info.cs / (info.gameDuration / 60))) / 100}</div>
+      <HolisticStats
+        kills={info.kills}
+        assists={info.assists}
+        deaths={info.deaths}
+        numGames={info.numGames}
+        cs={info.cs}
+        gameDuration={info.gameDuration}
+      >
+        We'll give the boring stuff first.
+      </HolisticStats>
 
       {/*Pentagon.jsx*/}
       <div>Have you ever dreamed of becoming Faker?</div>
 
       <div>Now here are more mildly interesting stats</div>
 
-      {/* number 5  favoriteChamps.jsx*/}
+      <FavChamps favoriteChamps={info.favoriteChamps}>You seem to like these champs a lot, but how good at them are you exactly?</FavChamps>
 
-      <div>You seem to like these champs a lot, but how good at them are you exactly?</div>
-      <div>{}</div>
-      <div>{}</div>
-      <div>{}</div>
-
-      {/* number 7 multikills.jsx */}
-
-      <div>Are you good at last hitting?</div>
-      <div>Double Kills:{info.doubleKills || 0} Triple Kill: {info.tripleKills || 0} QuadraKills: {info.quadraKills || 0} PentaKills: {info.pentaKills || 0}</div>
+      <MultiKills doubleKills={info.doubleKills} tripleKills={info.tripleKills} quadraKills={info.quadraKills} pentaKills={info.pentaKills}>Are you good at last hitting?</MultiKills>
 
       {/* timeVswins.jsx */}
       <div>Early finisher, mid-game monster, or a late game degenerate</div>
@@ -265,6 +264,8 @@ const App = () => {
       <div>On the other hand, here are the times you can play with ONE hand... haha (I'm sorry)</div>
       <div>Killed {getChampionName(info.mostKilledChampionId)} the most. {info.mostKilledChampionKills} times</div>
       <div>Best Winrate Against {getChampionName(info.bestWinrateAgainstChampionId)} at {info.bestWinrateAgainstChampionPercentage * 100}%</div>
+
+
     </div>
   );
 }
