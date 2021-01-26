@@ -8,6 +8,7 @@ import SearchBar from './SearchBar.jsx';
 import HolisticStats from './holisticStats/HolisticStats.jsx';
 import FavChamps from './favChampRoutes/FavChamps.jsx';
 import MultiKills from './multiKills/MultiKills.jsx';
+import VisionScore from './VisionScore.jsx';
 
 const StyledApp = styled.div`
     width: 1200px;
@@ -228,9 +229,7 @@ const App = () => {
       <div>Games won from 30 to 40 min: {gamesUnder40}%</div>
       <div>Games won past 40 min: {gamesPast40}%</div>
 
-      {/* visionScore.jsx */}
-      <div>Just to show that supports are more than just wards these days. They are also this.</div>
-      <div>Avg Vision Score: {Math.round(100*(info.visionScore / info.numGames)) / 100}</div>
+      <VisionScore visionScore={info.visionScore} numGames={info.numGames}>Just to show that supports are more than just wards these days. They are also this.</VisionScore>
 
       {/* kp.jsx */}
       <div>Reminder: League is a team game.</div>
