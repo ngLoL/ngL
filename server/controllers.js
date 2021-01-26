@@ -1,27 +1,5 @@
 const axios = require('axios');
-
-function countNumRankGames(queues) {
-  for (let i = 0; i < queues.length; i++) {
-    if (queues[i].queueType === "RANKED_SOLO_5x5") {
-      return queues[i].wins + queues[i].losses;
-    }
-  }
-  return 0;
-}
-
-// function getMostPlayedChamp(matchHistory) {
-//   const playedChampions = {};
-
-//   for (let j = 0; j < matchHistory.length; j++) {
-//     let champion = matchHistory[j].champion;
-
-//     if (!playedChampions[champion]) {
-//       playedChampions[champion] = 1;
-//     } else { playedChampions[champion]++; }
-//   }
-
-//   return Object.keys(playedChampions).reduce((a, b) => playedChampions[a] > playedChampions[b] ? a : b);
-// }
+const { countNumRankGames, gameStatsTemplate, champStatsTemplate, enemyChampStatsTemplate, updateChampStats, updateGameDuration, updateKillSpree, updateGlobalGameStats, updateMaxTimeLiving, updateUserVsEnemyKills } = require('./helper.js');
 
 module.exports = {
 
@@ -51,7 +29,80 @@ module.exports = {
     const matchStorage = matchHistory.map(match => axios.get(`https://na1.api.riotgames.com/lol/match/v4/matches/${match.gameId}?api_key=${api_key}`));
     const matchTimelines = matchHistory.map(match => axios.get(`https://na1.api.riotgames.com/lol/match/v4/timelines/by-match/${match.gameId}?api_key=${api_key}`));
 
-    return Promise.all([{ ...finalInfo}, championIds, ...matchStorage, ...matchTimelines]);
+    return Promise.all([{ ...finalInfo }, championIds, ...matchStorage, ...matchTimelines]);
+  },
+
+  getGameStats: (dataArr) => {
+    const [finalInfo, championIds, ...matches] = dataArr;
+    const gameStats = gameStatsTemplate();
+
+    // first half of matches: match infos
+    // second half: match timelines
+    let length = matches.length / 2;
+    for (let i = 0; i < length; i++) {
+      const { gameDuration, teams, participants, gameId } = matches[i].data;
+      const userChamp = championIds[i];
+
+      if (!gameStats.championStats[userChamp]) {
+        gameStats.championStats[userChamp] = champStatsTemplate();
+      }
+
+      let userStats;
+      let userTeam;
+      let enemyTeam;
+      let userPartId;
+      const partToChamp = {};
+      const teamsDamage = { 100: 0, 200: 0 };
+      const champsByTeam = { 100: [], 200: [] };
+      const teamsKills = { 100: 0, 200: 0 };
+
+      for (let participant of participants) {
+        const { stats, teamId, participantId, championId } = participant;
+        if (championId == userChamp) {
+          userStats = stats;
+          userTeam = teamId;
+          enemyTeam = teamId == 100 ? 200 : 100;
+          userPartId = participantId;
+        }
+        partToChamp[participantId] = championId;
+        teamsDamage[teamId] += stats.totalDamageDealtToChampions;
+        champsByTeam[teamId].push(championId);
+        teamsKills[teamId] += stats.kills;
+      }
+
+      const { win, largestKillingSpree, longestTimeSpentLiving } = userStats;
+
+      updateChampStats(gameStats, userChamp, userStats, teamsDamage[userTeam]);
+
+      updateGameDuration(gameStats, userChamp, gameDuration, win);
+
+      if (largestKillingSpree > gameStats.maxKillSpree) {
+        updateKillSpree(gameStats, largestKillingSpree, userChamp, gameId);
+      }
+
+      updateGlobalGameStats(gameStats, userStats, teamsKills[userTeam]);
+
+      const longestTimeSpentLivingInGame = longestTimeSpentLiving == 0 ? gameDuration : longestTimeSpentLiving;
+      if (longestTimeSpentLivingInGame > gameStats.maxTimeLiving) {
+        updateMaxTimeLiving(gameStats, longestTimeSpentLivingInGame, userChamp, gameId);
+      }
+
+      for (let i = 0; i < 5; i++) {
+        const enemyChamp = champsByTeam[enemyTeam][i];
+        if (!gameStats.enemyChampionStats[enemyChamp]) {
+          gameStats.enemyChampionStats[enemyChamp] = enemyChampStatsTemplate();
+        }
+        gameStats.enemyChampionStats[enemyChamp].totalGames++;
+        if (win) { gameStats.enemyChampionStats[enemyChamp].wins++; }
+      }
+
+      const timeline = matches[i + length].data;
+      updateUserVsEnemyKills(gameStats, timeline, userPartId, partToChamp);
+    }
+
+    const match = matches[0].data;
+
+    return ({ ...finalInfo, ...gameStats, match });
   },
 
 };

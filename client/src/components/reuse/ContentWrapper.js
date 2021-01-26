@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const ContentWrapper = styled.div`
-  width: ${(props) => props.short ? '100rem' : '120rem'};
+  width: 100rem;
   display: flex;
   margin: 0 auto;
   flex-direction: column;

@@ -111,7 +111,7 @@ const FavChamps = ({children, favoriteChamps}) => {
 
   return (
     <SectionWrapper>
-      <ContentWrapper short>
+      <ContentWrapper>
         <Caption>{children}</Caption>
         <NavWrapper>
           {nav}

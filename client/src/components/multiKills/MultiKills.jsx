@@ -6,6 +6,7 @@ import ContentWrapper from '../reuse/ContentWrapper.js';
 import Ring from './Ring.jsx';
 
 const MultiKillWrapper = styled.div`
+  width: 100%;
   margin: 0 auto;
   display: flex;
   justify-content: space-around;

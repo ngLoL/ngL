@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import {getChampionName} from '../../../champion-library/helper.js';
+import { getChampionName } from '../../../champion-library/helper.js';
 import Splash from './Splash.jsx';
+import Hexagon from './Hexagon.jsx';
 import SearchBar from './SearchBar.jsx';
 import HolisticStats from './holisticStats/HolisticStats.jsx';
 import FavChamps from './favChampRoutes/FavChamps.jsx';
 import MultiKills from './multiKills/MultiKills.jsx';
 
+const StyledApp = styled.div`
+    width: 1200px;
+    margin: auto;
+`;
 
 const App = () => {
   const [info, setInfo] = useState({
@@ -176,11 +181,13 @@ const App = () => {
           bestWinrateAgainstChampionPercentage: bestWinRate.currentWinRate,
           numTeamKills: results.data.totalTeamScore,
         });
-
-        console.log(results);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status == 400) {
+          alert(err.response.data);
+        } else if (err.response.status == 404) {
+          alert('Summoner does not exist');
+        }
       });
   };
 
@@ -190,9 +197,8 @@ const App = () => {
   const gamesPast40 = Math.round(100*(info.winsPast40 / info.gamesPast40));
 
   return (
-    <div>
-      {info.mostPlayedChampion && <Splash mostChampionName={getChampionName(info.mostPlayedChampion)} />}
-      <div>Summoner Name: {info.summonerName}</div>
+    <StyledApp>
+      {info.mostPlayedChampion && <Splash summonerName={info.summonerName.toUpperCase()} profileIconId={info.profileIconId} mostChampionName={getChampionName(info.mostPlayedChampion)} />}
 
       <HolisticStats
         kills={info.kills}
@@ -205,8 +211,9 @@ const App = () => {
         We'll give the boring stuff first.
       </HolisticStats>
 
-      {/*Pentagon.jsx*/}
+      {/*Hexagon.jsx*/}
       <div>Have you ever dreamed of becoming Faker?</div>
+      <Hexagon kda={(info.kills + info.assists)/info.deaths} cs={Math.round(100*(info.cs / (info.gameDuration / 60))) / 100} winRate={Math.round(100*(info.numWins / 3))} killParticipation={Math.round(100*((info.kills + info.assists)/info.numTeamKills))} teamDamage={Math.round(100*(info.totalDamageToChamps / info.totalTeamDamage))} visionScore={Math.round(100*(info.visionScore / (info.gameDuration / 60))) / 100}/>
 
       <div>Now here are more mildly interesting stats</div>
 
@@ -264,9 +271,7 @@ const App = () => {
       <div>On the other hand, here are the times you can play with ONE hand... haha (I'm sorry)</div>
       <div>Killed {getChampionName(info.mostKilledChampionId)} the most. {info.mostKilledChampionKills} times</div>
       <div>Best Winrate Against {getChampionName(info.bestWinrateAgainstChampionId)} at {info.bestWinrateAgainstChampionPercentage * 100}%</div>
-
-
-    </div>
+    </StyledApp>
   );
 }
 

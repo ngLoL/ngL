@@ -8,7 +8,7 @@ import SectionWrapper from '../reuse/SectionWrapper.js';
 const HolisticStats = ({children, kills, deaths, assists, cs, gameDuration, numGames}) => {
   return (
     <SectionWrapper>
-      <ContentWrapper short>
+      <ContentWrapper>
         <Caption>{children}</Caption>
         <HolisticStat kda={'AVG KDA'}>{Math.round(100*((kills + assists) / deaths)) / 100}</HolisticStat>
         <HolisticStat kills={'AVG KILLS'}>{Math.round(100*(kills / numGames)) / 100}</HolisticStat>
