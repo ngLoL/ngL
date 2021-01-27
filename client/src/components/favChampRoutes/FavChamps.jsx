@@ -50,7 +50,7 @@ const Tab = styled.button`
 
 const NavWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   background-color: var(--color-main);
   margin-bottom: 2rem;
   width: 70rem;
