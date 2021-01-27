@@ -18,6 +18,16 @@ module.exports = {
       throw new Error(`You don't have enough ranked solo games played`);
     }
 
+    // let delay = 0; const delayIncrement = 1000;
+
+    // const promises = items.map(item => {
+    //   delay += delayIncrement;
+    //   return new Promise(resolve => setTimeout(resolve, delay)).then(() =>
+    //     fetch(...);
+    // })
+
+    // let results = await Promise.all(promises);
+
     return Promise.all([{ ...finalInfo, numRankGames }, axios.get(`https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&endIndex=3&beginIndex=0&api_key=${api_key}`)]);
   },
 
