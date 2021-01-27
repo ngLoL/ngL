@@ -73,10 +73,6 @@ const FavChamps = ({children, favoriteChamps}) => {
 
   const [champStats, setChampStats] = useState(0);
 
-  const handleClick = (i) => {
-    let button
-  };
-
   const nav = favoriteChamps.map((champ, i) => {
     return (
       <Tab key={i} index={i} active={champStats} onClick={() => setChampStats(i)}>{getChampionName(champ.champId)}</Tab>

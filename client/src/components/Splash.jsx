@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 
 const Splash = (props) => {
   const StyledSplash = styled.div`
-    height: 500px;
+    height: 600px;
     text-align: center;
     padding: 20% 0 10%;
     background: radial-gradient(transparent, #161b22 75%),
