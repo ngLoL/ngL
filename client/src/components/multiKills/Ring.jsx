@@ -84,7 +84,7 @@ const Tag = styled.div`
 const Number = styled.div`
   text-align: center;
   color: var(--color-textColor);
-  font-size: 2rem;
+  font-size: 6rem;
   width: 50%;
   height: auto;
   margin: 0 auto;

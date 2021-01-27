@@ -68,7 +68,7 @@ const App = () => {
 
 
   useEffect(() => {
-    getSummonerInfo('TheLastStand');
+    getSummonerInfo('Revenge');
   }, []);
 
   const getSummonerInfo = (summonerName) => {
