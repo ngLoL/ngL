@@ -1,12 +1,12 @@
 const theme = {
   colors: {
-    bgNavyBlue: '#161b22',
-    bgGray: '#99aab5',
-    mainDark: '#112034',
-    mainLight: '#0c2d6b',
-    pinkAccent: '#db61a2',
-    purpleAccent: '#271052',
-    turqoiseAccent: '#35f0f0',
+    bg: '#161b22',
+    pale: '##f3ccbd',
+    peach: '#eebcbb',
+    pink: '#e7acc2',
+    lavendar: '#d6b5d4',
+    purple: '#c9bcda',
+    blue: '#b2c9e9',
     shadow: 'rgba(0,0,0,.2)',
   },
   mediaQueries: {

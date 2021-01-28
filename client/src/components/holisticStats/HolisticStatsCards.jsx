@@ -15,9 +15,9 @@ const CardWrapper = styled.div`
 `;
 
 
-const HolisticStatsCard = ({children, kills, deaths, assists, cs, gameDuration, numGames}) => {
+const HolisticStatsCards = ({children, kills, deaths, assists, cs, gameDuration, numGames}) => {
   return (
-    <SectionWrapper odd>
+    <SectionWrapper>
       <ContentWrapper>
         <Caption>{children}</Caption>
         <CardWrapper>
@@ -32,4 +32,4 @@ const HolisticStatsCard = ({children, kills, deaths, assists, cs, gameDuration, 
   );
 };
 
-export default HolisticStatsCard;
+export default HolisticStatsCards;

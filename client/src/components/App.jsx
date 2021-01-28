@@ -5,16 +5,11 @@ import { getChampionName } from '../../../champion-library/helper.js';
 import Splash from './Splash.jsx';
 import Hexagon from './Hexagon.jsx';
 import SearchBar from './SearchBar.jsx';
-import HolisticStats from './holisticStats/HolisticStats.jsx';
-import HolisticStatsCard from './holisticStats/HolisticStatsCard.jsx';
-import FavChamps from './favChampRoutes/FavChamps.jsx';
+import HolisticStatsCards from './holisticStats/HolisticStatsCards.jsx';
+import FavChampsCards from './favChampRoutes/FavChampsCards.jsx';
 import MultiKills from './multiKills/MultiKills.jsx';
 import VisionScore from './VisionScore.jsx';
 
-const StyledApp = styled.div`
-    width: 1200px;
-    margin: auto;
-`;
 
 const App = () => {
   const [info, setInfo] = useState({
@@ -202,7 +197,7 @@ const App = () => {
     <div>
       {info.mostPlayedChampion && <Splash summonerName={info.summonerName.toUpperCase()} profileIconId={info.profileIconId} mostChampionName={getChampionName(info.mostPlayedChampion)} />}
 
-      <HolisticStatsCard
+      <HolisticStatsCards
         kills={info.kills}
         assists={info.assists}
         deaths={info.deaths}
@@ -211,13 +206,13 @@ const App = () => {
         gameDuration={info.gameDuration}
       >
         We'll give the boring stuff first.
-      </HolisticStatsCard>
+      </HolisticStatsCards>
 
       {/*Hexagon.jsx*/}
       <div>Have you ever dreamed of becoming Faker?</div>
       <Hexagon kda={(info.kills + info.assists)/info.deaths} cs={Math.round(100*(info.cs / (info.gameDuration / 60))) / 100} winRate={Math.round(100*(info.numWins / 3))} killParticipation={Math.round(100*((info.kills + info.assists)/info.numTeamKills))} teamDamage={Math.round(100*(info.totalDamageToChamps / info.totalTeamDamage))} visionScore={Math.round(100*(info.visionScore / (info.gameDuration / 60))) / 100}/>
 
-      <FavChamps favoriteChamps={info.favoriteChamps}>You seem to like these champs a lot, but how good at them are you exactly?</FavChamps>
+      <FavChampsCards favoriteChamps={info.favoriteChamps}>You seem to like these champs a lot, but how good at them are you exactly?</FavChampsCards>
 
       <MultiKills doubleKills={info.doubleKills} tripleKills={info.tripleKills} quadraKills={info.quadraKills} pentaKills={info.pentaKills}>Are you good at last hitting?</MultiKills>
 
