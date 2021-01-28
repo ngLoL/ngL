@@ -18,10 +18,10 @@ export default createGlobalStyle`
   html {
     font-size: 62.5%;
     box-sizing: border-box;
-    --color-main: ${(props) => props.theme.colors.main};
+    --color-bgNavyBlue: ${(props) => props.theme.colors.bgNavyBlue};
+    --color-bgGray: ${(props) => props.theme.colors.bgGray};
     --color-mainDark: ${(props) => props.theme.colors.mainDark};
     --color-mainLight: ${(props) => props.theme.colors.mainLight};
-    --color-textColor: ${(props) => props.theme.colors.textColor};
     --color-pinkAccent: ${(props) => props.theme.colors.pinkAccent};
     --color-purpleAccent: ${(props) => props.theme.colors.purpleAccent};
     --color-turqoiseAccent: ${(props) => props.theme.colors.turqoiseAccent};
@@ -37,7 +37,6 @@ export default createGlobalStyle`
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     line-height: 1.6;
-    background-color: var(--color-main);
   }
   a, button {
     cursor: pointer;

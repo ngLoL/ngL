@@ -29,7 +29,7 @@ const Wrapper = styled.div`
 `;
 
 const Stat = styled.div`
-  color: var(--color-textColor);
+  color: #fff;
   font-size: 3rem;
   margin: ${(props) => props.favChamps ? '1.811rem' : '2rem'};
 `
@@ -41,7 +41,7 @@ const InnerWrapper = styled.div`
 const Text = styled.div`
   font-weight: 700;
   font-size: 2rem;
-  color: var(--color-textColor);
+  color: #fff;
   margin-right: 1rem;
 `;
 

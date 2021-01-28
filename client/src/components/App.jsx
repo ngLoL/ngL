@@ -6,6 +6,7 @@ import Splash from './Splash.jsx';
 import Hexagon from './Hexagon.jsx';
 import SearchBar from './SearchBar.jsx';
 import HolisticStats from './holisticStats/HolisticStats.jsx';
+import HolisticStatsCard from './holisticStats/HolisticStatsCard.jsx';
 import FavChamps from './favChampRoutes/FavChamps.jsx';
 import MultiKills from './multiKills/MultiKills.jsx';
 import VisionScore from './VisionScore.jsx';
@@ -198,10 +199,10 @@ const App = () => {
   const gamesPast40 = Math.round(100*(info.winsPast40 / info.gamesPast40));
 
   return (
-    <StyledApp>
+    <div>
       {info.mostPlayedChampion && <Splash summonerName={info.summonerName.toUpperCase()} profileIconId={info.profileIconId} mostChampionName={getChampionName(info.mostPlayedChampion)} />}
 
-      <HolisticStats
+      <HolisticStatsCard
         kills={info.kills}
         assists={info.assists}
         deaths={info.deaths}
@@ -210,13 +211,11 @@ const App = () => {
         gameDuration={info.gameDuration}
       >
         We'll give the boring stuff first.
-      </HolisticStats>
+      </HolisticStatsCard>
 
       {/*Hexagon.jsx*/}
       <div>Have you ever dreamed of becoming Faker?</div>
       <Hexagon kda={(info.kills + info.assists)/info.deaths} cs={Math.round(100*(info.cs / (info.gameDuration / 60))) / 100} winRate={Math.round(100*(info.numWins / 3))} killParticipation={Math.round(100*((info.kills + info.assists)/info.numTeamKills))} teamDamage={Math.round(100*(info.totalDamageToChamps / info.totalTeamDamage))} visionScore={Math.round(100*(info.visionScore / (info.gameDuration / 60))) / 100}/>
-
-      <div>Now here are more mildly interesting stats</div>
 
       <FavChamps favoriteChamps={info.favoriteChamps}>You seem to like these champs a lot, but how good at them are you exactly?</FavChamps>
 
@@ -270,7 +269,7 @@ const App = () => {
       <div>On the other hand, here are the times you can play with ONE hand... haha (I'm sorry)</div>
       <div>Killed {getChampionName(info.mostKilledChampionId)} the most. {info.mostKilledChampionKills} times</div>
       <div>Best Winrate Against {getChampionName(info.bestWinrateAgainstChampionId)} at {info.bestWinrateAgainstChampionPercentage * 100}%</div>
-    </StyledApp>
+    </div>
   );
 }
 

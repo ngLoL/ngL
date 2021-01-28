@@ -77,13 +77,13 @@ const InnerWrapper = styled.div`
 
 const Tag = styled.div`
   text-align: center;
-  color: var(--color-textColor);
+  color: #fff;
   font-size: 2rem;
 `;
 
 const Number = styled.div`
   text-align: center;
-  color: var(--color-textColor);
+  color: #fff;
   font-size: 6rem;
   width: 50%;
   height: auto;

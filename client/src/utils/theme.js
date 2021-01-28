@@ -1,16 +1,13 @@
 const theme = {
   colors: {
-    main: '#161b22',
+    bgNavyBlue: '#161b22',
+    bgGray: '#99aab5',
     mainDark: '#112034',
     mainLight: '#0c2d6b',
-    textColor: '#fff',
     pinkAccent: '#db61a2',
     purpleAccent: '#271052',
     turqoiseAccent: '#35f0f0',
     shadow: 'rgba(0,0,0,.2)',
-  },
-  fontWeight: {
-
   },
   mediaQueries: {
     smallest: 'only screen and (max-width: 25em)',

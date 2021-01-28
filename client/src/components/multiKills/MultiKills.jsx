@@ -11,7 +11,6 @@ const MultiKillWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   padding-bottom: 2.5rem;
-  background-color: var(--color-main);
 `;
 
 const MultiKills = ({children, doubleKills, tripleKills, quadraKills, pentaKills}) => {

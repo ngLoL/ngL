@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 
-const Caption = styled.h3`
-  color: var(--color-textColor);
-  text-align: center;
-  margin: 1.5rem;
-  font-size: 2rem;
+const Caption = styled.h1`
+  color: #fff;
+  font-size: 2.5rem;
   white-space: nowrap;
+  text-align: center;
 `;
 
 export default Caption;
