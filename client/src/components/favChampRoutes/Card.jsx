@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import Stat from './Stat.jsx';
 
 const StyledCard = styled.div`
   width: 30.8rem;
@@ -31,7 +32,7 @@ const ImgWrapper = styled.div`
   backface-visibility: hidden;
   overflow: hidden;
   border-radius: 2rem;
-  box-shadow: 0px 3px 18px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 3px 18px 3px var(--shadow);
 `;
 
 const LoadingImg = styled.img`
@@ -41,16 +42,20 @@ const LoadingImg = styled.img`
 `;
 
 const StatsWrapper = styled.div`
-  background-color: var(--bg);
   transform: rotateY(180deg);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  overflow: hidden;
-  border-radius: 2rem;
-  box-shadow: 0px 3px 18px 3px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    overflow: hidden;
+    border-radius: 2rem;
+    box-shadow: 0px 3px 18px 3px var(--shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    background-color: var(--bg);
+    align-items: center;
 `;
 
 
@@ -63,7 +68,17 @@ const Card = ({favChamp}) => {
         <ImgWrapper>
           <LoadingImg src="https://loadingscreenimg.s3-us-west-1.amazonaws.com/Aatrox_0.jpg" alt="Loading Screen Image of Champion"></LoadingImg>
         </ImgWrapper>
-        <StatsWrapper>hello</StatsWrapper>
+        <StatsWrapper>
+          <Stat games={'GAMES PLAYED'}>{favChamp.numGames}</Stat>
+          <Stat winRate={'WIN RATE'}>{Math.round(100*(favChamp.numWins / favChamp.numGames))}%</Stat>
+          <Stat kda={'AVG KDA'}>{Math.round(100*((favChamp.totalKills + favChamp.totalAssists) / favChamp.totalDeaths)) / 100}</Stat>
+          <Stat kills={'AVG KILLS'}>{Math.round(100*(favChamp.totalKills / favChamp.numGames)) / 100}</Stat>
+          <Stat deaths={'AVG DEATHS'}>{Math.round(100*(favChamp.totalDeaths / favChamp.numGames)) / 100}</Stat>
+          <Stat assists={'AVG ASSISTS'}>{Math.round(100*(favChamp.totalAssists / favChamp.numGames)) / 100}</Stat>
+          <Stat csPerMin={'AVG CS/MIN'}>{Math.round(100*(favChamp.totalCs / (favChamp.totalGameDuration / 60))) / 100}</Stat>
+          <Stat dmgPerGame={'DMG/GAME'}>{Math.round(100*(favChamp.totalDamageToChamps / favChamp.numGames)) / 100}</Stat>
+          <Stat percentOfTeamDamage={'% OF TEAM DMG'}>{Math.round(100*(favChamp.totalDamageToChamps / favChamp.totalTeamDamageToChamps))}%</Stat>
+        </StatsWrapper>
       </InnerCard>
     </StyledCard>
   );

@@ -7,7 +7,7 @@ import Hexagon from './Hexagon.jsx';
 import SearchBar from './SearchBar.jsx';
 import HolisticStatsCards from './holisticStats/HolisticStatsCards.jsx';
 import FavChampsCards from './favChampRoutes/FavChampsCards.jsx';
-import MultiKills from './multiKills/MultiKills.jsx';
+import MultiKillsCards from './multiKills/MultiKillsCards.jsx';
 import VisionScore from './VisionScore.jsx';
 
 
@@ -214,7 +214,7 @@ const App = () => {
 
       <FavChampsCards favoriteChamps={info.favoriteChamps}>You seem to like these champs a lot, but how good at them are you exactly?</FavChampsCards>
 
-      <MultiKills doubleKills={info.doubleKills} tripleKills={info.tripleKills} quadraKills={info.quadraKills} pentaKills={info.pentaKills}>Are you good at last hitting?</MultiKills>
+      <MultiKillsCards doubleKills={info.doubleKills} tripleKills={info.tripleKills} quadraKills={info.quadraKills} pentaKills={info.pentaKills}>Are you good at last hitting?</MultiKillsCards>
 
       {/* timeVswins.jsx */}
       <div>Early finisher, mid-game monster, or a late game degenerate</div>

@@ -16,14 +16,17 @@ const CardsContainer = styled.div`
 
 
 const FavChampsCards = ({children, favoriteChamps}) => {
+  const favChamps = favoriteChamps.map((champ, i) => {
+    return (
+      <Card key={i} favChamp={champ}></Card>
+    );
+  })
   return (
     <SectionWrapper>
       <ContentWrapper>
         <Caption>{children}</Caption>
         <CardsContainer>
-          <Card favChamp={favoriteChamps[0]}></Card>
-          <Card favChamp={favoriteChamps[1]}></Card>
-          <Card favChamp={favoriteChamps[2]}></Card>
+          {favChamps}
         </CardsContainer>
       </ContentWrapper>
     </SectionWrapper>
