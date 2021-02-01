@@ -18,13 +18,13 @@ export default createGlobalStyle`
   html {
     font-size: 62.5%;
     box-sizing: border-box;
-    --color-bgNavyBlue: ${(props) => props.theme.colors.bgNavyBlue};
-    --color-bgGray: ${(props) => props.theme.colors.bgGray};
-    --color-mainDark: ${(props) => props.theme.colors.mainDark};
-    --color-mainLight: ${(props) => props.theme.colors.mainLight};
-    --color-pinkAccent: ${(props) => props.theme.colors.pinkAccent};
-    --color-purpleAccent: ${(props) => props.theme.colors.purpleAccent};
-    --color-turqoiseAccent: ${(props) => props.theme.colors.turqoiseAccent};
+    --bg: ${(props) => props.theme.colors.bg};
+    --pale: ${(props) => props.theme.colors.pale};
+    --peach: ${(props) => props.theme.colors.peach};
+    --pink: ${(props) => props.theme.colors.pink};
+    --lavendar: ${(props) => props.theme.colors.lavendar};
+    --purple: ${(props) => props.theme.colors.purple};
+    --blue: ${(props) => props.theme.colors.blue};
     --shadow: ${(props) => props.theme.colors.shadow};
     @media ${(props) => props.theme.mediaQueries.small} {
       font-size: 60%;

@@ -15,7 +15,6 @@ const Box = styled.div`
   align-items: center;
   margin: 3rem;
   transition: 0.5s;
-  background: #060c21;
 
   &:before {
     content: '';
@@ -25,7 +24,6 @@ const Box = styled.div`
     left: -0.28rem;
     right: -0.28rem;
     bottom: -0.28rem;
-    background: #fff;
   }
 
   &:after {
@@ -36,17 +34,16 @@ const Box = styled.div`
     left: -0.28rem;
     right: -0.28rem;
     bottom: -0.28rem;
-    background: #fff;
     z-index: -1;
     filter: blur(4rem);
   }
 
   &:before, &:after {
-    background: linear-gradient(to bottom right,#89ff00,#43dd6d,#00bcd4);
+    background: linear-gradient(to bottom right, rgba(243,204,189,1) 0%, rgba(238,188,187,1) 20%, rgba(231,172,194,1) 40%, rgba(214,181,212,1) 60%, rgba(201,188,218,1) 80%, rgba(178,201,233,1) 100%);
   }
 
   &:nth-child(2n):before, &:nth-child(2n):after {
-    background: linear-gradient(to bottom left,#ff005e,#fd7931,#fbff00)
+    background: linear-gradient(to bottom left, rgba(243,204,189,1) 0%, rgba(238,188,187,1) 20%, rgba(231,172,194,1) 40%, rgba(214,181,212,1) 60%, rgba(201,188,218,1) 80%, rgba(178,201,233,1) 100%);
   }
 
   &:hover {

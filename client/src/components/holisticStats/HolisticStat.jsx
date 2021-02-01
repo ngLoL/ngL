@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   }};
   width: ${(props) => props.favChamps ? '47.3rem' : '40rem'};
   justify-content: space-between;
-  border-color: var(--color-turqoiseAccent);
+  border-color: var(--pale);
   border-style: solid;
   border-width: ${(props) => {
     if (props.top) {
@@ -25,7 +25,7 @@ const Wrapper = styled.div`
       return '0.05rem'
     }
   }};
-  background-color: var(--color-mainDark);
+  background-color: var(--pale);
 `;
 
 const Stat = styled.div`

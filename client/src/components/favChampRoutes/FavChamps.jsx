@@ -12,7 +12,7 @@ const ChampWrapper = styled.div`
   margin: 0 auto;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-bgNavyBlue);
+  background-color: var(--bg);
 `;
 
 const StatWrapper = styled.div`
@@ -22,12 +22,12 @@ const StatWrapper = styled.div`
   margin: 0 auto;
   flex-direction: column;
   justify-content: center;
-  background-color: var(--color-bgNavyBlue);
+  background-color: var(--bg);
 `;
 
 const Tab = styled.button`
   width: 30%;
-  background-color: var(--color-bgNavyBlue);
+  background-color: var(--bg);
   color: #fff;
   font-size: 2.5rem;
   border-top: none;
@@ -36,7 +36,7 @@ const Tab = styled.button`
   border-left: none;
   border-bottom: ${(props) => {
     if (props.index === props.active) {
-      return '0.2rem solid var(--color-turqoiseAccent)';
+      return '0.2rem solid var(--pale)';
     } else {
       return '0.2rem solid transparent';
     }
@@ -44,14 +44,14 @@ const Tab = styled.button`
   transition: all 0.2s;
 
   &:hover {
-    border-bottom: 0.2rem solid var(--color-turqoiseAccent);
+    border-bottom: 0.2rem solid var(--pale);
   }
 `;
 
 const NavWrapper = styled.div`
   display: flex;
   justify-content: space-evenly;
-  background-color: var(--color-bgNavyBlue);
+  background-color: var(--bg);
   margin-bottom: 2rem;
   width: 70rem;
 `;
@@ -106,7 +106,7 @@ const FavChamps = ({children, favoriteChamps}) => {
   };
 
   return (
-    <SectionWrapper odd>
+    <SectionWrapper>
       <ContentWrapper>
         <Caption>{children}</Caption>
         <NavWrapper>
