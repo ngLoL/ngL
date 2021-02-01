@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll",
-    "build": "webpack",
+    "build": "webpack --mode=production",
     "build:dev": "webpack --watch",
+    "cache": "redis-server",
     "start:dev": "nodemon server/index.js",
     "start": "NODE_ENV=production node server/index.js",
     "champlib": "node champion-library/generateChampIdToName.js"
@@ -37,6 +38,7 @@
     "react-dom-confetti": "^0.2.0",
     "react-icons": "^4.1.0",
     "react-router-dom": "^5.2.0",
+    "redis": "^3.0.2",
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
