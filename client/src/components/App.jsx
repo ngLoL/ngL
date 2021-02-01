@@ -215,7 +215,7 @@ const App = () => {
 
       {/*Hexagon.jsx*/}
       <div>Have you ever dreamed of becoming Faker?</div>
-      <Hexagon kda={(info.kills + info.assists)/info.deaths} cs={Math.round(100*(info.cs / (info.gameDuration / 60))) / 100} winRate={Math.round(100*(info.numWins / 3))} killParticipation={Math.round(100*((info.kills + info.assists)/info.numTeamKills))} teamDamage={Math.round(100*(info.totalDamageToChamps / info.totalTeamDamage))} visionScore={Math.round(100*(info.visionScore / (info.gameDuration / 60))) / 100}/>
+      <Hexagon summonerName={info.summonerName} kda={(info.kills + info.assists)/info.deaths} cs={Math.round(100*(info.cs / (info.gameDuration / 60))) / 100} winRate={Math.round(100*(info.numWins / 3))} killParticipation={Math.round(100*((info.kills + info.assists)/info.numTeamKills))} teamDamage={Math.round(100*(info.totalDamageToChamps / info.totalTeamDamage))} visionScore={Math.round(100*(info.visionScore / (info.gameDuration / 60))) / 100}/>
 
       <FavChamps favoriteChamps={info.favoriteChamps}>You seem to like these champs a lot, but how good at them are you exactly?</FavChamps>
 

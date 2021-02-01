@@ -5,7 +5,7 @@ const Splash = (props) => {
   const StyledSplash = styled.div`
     height: 600px;
     text-align: center;
-    padding: 20% 0 10%;
+    padding: 15% 0 10%;
     background: radial-gradient(transparent, #161b22 75%),
     url('https://nglol.s3-us-west-1.amazonaws.com/champion/splash/${props.mostChampionName}_0.jpg');
     background-repeat: no-repeat;
