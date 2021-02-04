@@ -29,7 +29,6 @@ const Splash = (props) => {
     height: 150px;
     border-radius: 100%;
     border: 2px solid #FFD8DC;
-    box-shadow: 0 0 50px #0c2d6b;
     -webkit-box-reflect: below 10px linear-gradient(transparent, transparent, #0002);
     animation: ${animate} 5s linear infinite;
   `;

@@ -12,22 +12,37 @@ module.exports = {
   getMatchHistory: (dataArr, api_key) => {
     const [finalInfo, accountId, dataObj] = dataArr;
     const queues = dataObj.data;
-    let numRankGames = countNumRankGames(queues);
+    let numRankGames = Math.min(countNumRankGames(queues), 25);
 
     if (numRankGames == 0) {
       throw new Error(`You don't have enough ranked solo games played`);
     }
 
-    return Promise.all([{ ...finalInfo, numRankGames }, axios.get(`https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&endIndex=3&beginIndex=0&api_key=${api_key}`)]);
+    return Promise.all([{ ...finalInfo, numRankGames }, axios.get(`https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&endIndex=${numRankGames}&beginIndex=0&api_key=${api_key}`)]);
   },
 
   getMatches: (dataArr, api_key) => {
     const [finalInfo, dataObj] = dataArr;
     let matchHistory = dataObj.data.matches;
 
+    let RATE_LIMIT_BASE = 150;
+    let promises = (url) => matchHistory.map((match, idx) => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() =>
+            axios
+              .get(`${url}/${match.gameId}?api_key=${api_key}`)
+              .then(res => resolve(res))
+              .catch(err => reject(err)),
+          RATE_LIMIT_BASE * idx
+        );
+      });
+    });
+
     const championIds = matchHistory.map(match => match.champion);
-    const matchStorage = matchHistory.map(match => axios.get(`https://na1.api.riotgames.com/lol/match/v4/matches/${match.gameId}?api_key=${api_key}`));
-    const matchTimelines = matchHistory.map(match => axios.get(`https://na1.api.riotgames.com/lol/match/v4/timelines/by-match/${match.gameId}?api_key=${api_key}`));
+    // const matchStorage = matchHistory.map(match => axios.get(`https://na1.api.riotgames.com/lol/match/v4/matches/${match.gameId}?api_key=${api_key}`));
+    const matchStorage = promises('https://na1.api.riotgames.com/lol/match/v4/matches');
+    // const matchTimelines = matchHistory.map(match => axios.get(`https://na1.api.riotgames.com/lol/match/v4/timelines/by-match/${match.gameId}?api_key=${api_key}`));
+    const matchTimelines = promises('https://na1.api.riotgames.com/lol/match/v4/timelines/by-match');
 
     return Promise.all([{ ...finalInfo }, championIds, ...matchStorage, ...matchTimelines]);
   },

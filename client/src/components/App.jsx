@@ -9,6 +9,7 @@ import HolisticStatsCards from './holisticStats/HolisticStatsCards.jsx';
 import FavChampsCards from './favChampRoutes/FavChampsCards.jsx';
 import MultiKillsCards from './multiKills/MultiKillsCards.jsx';
 import VisionScore from './VisionScore.jsx';
+import TimeVsWin from './TimeVsWin.jsx';
 
 
 const App = () => {
@@ -64,7 +65,7 @@ const App = () => {
 
 
   useEffect(() => {
-    getSummonerInfo('hipposnuggler');
+    getSummonerInfo('doublelift');
   }, []);
 
   const getSummonerInfo = (summonerName) => {
@@ -208,18 +209,13 @@ const App = () => {
         We'll give the boring stuff first.
       </HolisticStatsCards>
 
-      <Hexagon summonerName={info.summonerName} kda={(info.kills + info.assists)/info.deaths} cs={Math.round(100*(info.cs / (info.gameDuration / 60))) / 100} winRate={Math.round(100*(info.numWins / 3))} killParticipation={Math.round(100*((info.kills + info.assists)/info.numTeamKills))} teamDamage={Math.round(100*(info.totalDamageToChamps / info.totalTeamDamage))} visionScore={Math.round(100*(info.visionScore / (info.gameDuration / 60))) / 100}/>
+      <Hexagon summonerName={info.summonerName} kda={(info.kills + info.assists)/info.deaths} cs={Math.round(100*(info.cs / (info.gameDuration / 60))) / 100} winRate={Math.round(100*(info.numWins / info.numGames))} killParticipation={Math.round(100*((info.kills + info.assists)/info.numTeamKills))} teamDamage={Math.round(100*(info.totalDamageToChamps / info.totalTeamDamage))} visionScore={Math.round(100*(info.visionScore / (info.gameDuration / 60))) / 100}/>
 
       <FavChampsCards favoriteChamps={info.favoriteChamps}>You seem to like these champs a lot, but how good at them are you exactly?</FavChampsCards>
 
       <MultiKillsCards doubleKills={info.doubleKills} tripleKills={info.tripleKills} quadraKills={info.quadraKills} pentaKills={info.pentaKills}>Are you good at last hitting?</MultiKillsCards>
 
-      {/* timeVswins.jsx */}
-      <div>Early finisher, mid-game monster, or a late game degenerate</div>
-      <div>Games won under 20 min: {gamesUnder20}%</div>
-      <div>Games won from 20 to 30 min: {gamesUnder30}%</div>
-      <div>Games won from 30 to 40 min: {gamesUnder40}%</div>
-      <div>Games won past 40 min: {gamesPast40}%</div>
+      <TimeVsWin timeVsWins={[info.winsUnder20, info.winsUnder30, info.winsUnder40, info.winsPast40]} />
 
       <VisionScore visionScore={info.visionScore} numGames={info.numGames}>Just to show that supports are more than just wards these days. They are also this.</VisionScore>
 
