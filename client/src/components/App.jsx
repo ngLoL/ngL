@@ -196,7 +196,7 @@ const App = () => {
 
   return (
     <div>
-      {info.mostPlayedChampion && <Splash summonerName={info.summonerName.toUpperCase()} profileIconId={info.profileIconId} mostChampionName={getChampionName(info.mostPlayedChampion)} />}
+      <Splash summonerName={info.summonerName.toUpperCase()} profileIconId={info.profileIconId} mostPlayedChamp={getChampionName(info.mostPlayedChampion)} />
 
       <HolisticStatsCards
         kills={info.kills}

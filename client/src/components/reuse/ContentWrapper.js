@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const ContentWrapper = styled.div`
   width: 120rem;
+  height: 100%;
   display: flex;
   margin: 0 auto;
   flex-direction: column;

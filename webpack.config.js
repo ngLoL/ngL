@@ -2,6 +2,8 @@ var path = require('path');
 var SRC_DIR = path.join(__dirname, '/client/src');
 var DIST_DIR = path.join(__dirname, '/client/dist');
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 module.exports = {
   mode: 'production',
   entry: `${SRC_DIR}/index.jsx`,
@@ -25,5 +27,8 @@ module.exports = {
     ],
   },
   devtool: 'cheap-module-source-map',
+  plugins: [
+    new BundleAnalyzerPlugin()
+  ],
 };
 
