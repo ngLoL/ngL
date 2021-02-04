@@ -44,7 +44,7 @@ app.get('/summoner/:summonerName', (req, res) => {
         .then(datas => getMatches(datas, api_key))
         .then(datas => getGameStats(datas))
         .then(result => {
-          redis_client.setex(summonerName, 1440, JSON.stringify(result));
+          redis_client.setex(summonerName, 60, JSON.stringify(result));
           return result;
         })
         .then(result => res.status(200).send(result))
