@@ -1,12 +1,10 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const axios = require('axios');
+const compression = require('compression');
 const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
-const compression = require('compression');
-const axios = require('axios');
 const redis = require('redis');
-
 const api_key = require('../riotAPIKey.js');
 const { getEntries, getMatchHistory, getMatches, getGameStats } = require('./controllers.js');
 
@@ -19,8 +17,8 @@ redis_client.on("error", (error) => {
   console.error(error);
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded());
 app.use(morgan('dev'));
 app.use(cors());
 app.use(compression());
