@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styled from 'styled-components';
 import { getChampionName } from '../../../champion-library/helper.js';
 import Splash from './Splash.jsx';
-import Hexagon from './Hexagon.jsx';
-import SearchBar from './SearchBar.jsx';
 import HolisticStatsCards from './holisticStats/HolisticStatsCards.jsx';
+import Hexagon from './Hexagon.jsx';
 import FavChampsCards from './favChampRoutes/FavChampsCards.jsx';
 import MultiKillsCards from './multiKills/MultiKillsCards.jsx';
-import VisionScore from './VisionScore.jsx';
 import TimeVsWin from './TimeVsWin.jsx';
-
+import VisionScore from './VisionScore.jsx';
 
 const App = () => {
   const [info, setInfo] = useState({
@@ -63,11 +60,6 @@ const App = () => {
     bestWinrateAgainstChampionPercentage: 0,
   });
 
-
-  useEffect(() => {
-    getSummonerInfo('doublelift');
-  }, []);
-
   const getSummonerInfo = (summonerName) => {
     axios.get(`/summoner/${summonerName}`)
       .then((results) => {
@@ -87,11 +79,10 @@ const App = () => {
           totalTeamDamage: 0,
         };
         const yourChampionStats = results.data.championStats;
-        const enemyChampionStats = results.data.enemyChampionStats;
-
+        const { enemyChampionStats } = results.data;
 
         for (const champId in yourChampionStats) {
-          let champObj = yourChampionStats[champId];
+          const champObj = yourChampionStats[champId];
           champObj.champId = champId;
           mostPlayed.push(champObj);
           yourOverallStats.kills += yourChampionStats[champId].totalKills;
@@ -105,8 +96,8 @@ const App = () => {
         }
 
         for (const champId in enemyChampionStats) {
-          let champObj = enemyChampionStats[champId];
-          champObj.currentWinRate = Math.round(100*(champObj.wins / champObj.totalGames)) / 100;
+          const champObj = enemyChampionStats[champId];
+          champObj.currentWinRate = Math.round(100 * (champObj.wins / champObj.totalGames)) / 100;
           champObj.champId = champId;
 
           if (champObj.killsBy > mostDiedTo.killsBy) {
@@ -123,7 +114,7 @@ const App = () => {
           }
         }
 
-        mostPlayed.sort((a, b) => {
+        const top3 = mostPlayed.sort((a, b) => {
           if (a.numGames > b.numGames) {
             return -1;
           }
@@ -131,7 +122,7 @@ const App = () => {
 
         setInfo({
           ...info,
-          summonerName: summonerName,
+          summonerName,
           mostPlayedChampion: mostPlayed[0].champId,
           kills: yourOverallStats.kills,
           deaths: yourOverallStats.deaths,
@@ -166,7 +157,7 @@ const App = () => {
           numFirstBlood: results.data.totalFirstBloods,
           timeCCingOthers: results.data.totalTimeCCingOthers,
           visionScore: results.data.totalVisionScore,
-          favoriteChamps: mostPlayed,
+          favoriteChamps: top3,
           winsWithFirstBlood: results.data.totalWinsWithFirstBloods,
           numTeamKills: results.data.totalTeamScore,
           mostDiedToChampionId: mostDiedTo.champId,
@@ -177,7 +168,6 @@ const App = () => {
           worstWinrateAgainstChampionPercentage: worstWinRate.currentWinRate,
           bestWinrateAgainstChampionId: bestWinRate.champId,
           bestWinrateAgainstChampionPercentage: bestWinRate.currentWinRate,
-          numTeamKills: results.data.totalTeamScore,
         });
       })
       .catch((err) => {
@@ -189,14 +179,17 @@ const App = () => {
       });
   };
 
-  const gamesUnder20 = Math.round(100*(info.winsUnder20 / info.gamesUnder20));
-  const gamesUnder30 = Math.round(100*(info.winsUnder30 / info.gamesUnder30));
-  const gamesUnder40 = Math.round(100*(info.winsUnder40 / info.gamesUnder40));
-  const gamesPast40 = Math.round(100*(info.winsPast40 / info.gamesPast40));
+  useEffect(() => {
+    getSummonerInfo('doublelift');
+  }, []);
 
   return (
     <div>
-      <Splash summonerName={info.summonerName.toUpperCase()} profileIconId={info.profileIconId} mostPlayedChamp={getChampionName(info.mostPlayedChampion)} />
+      <Splash
+        summonerName={info.summonerName.toUpperCase()}
+        profileIconId={info.profileIconId}
+        mostPlayedChamp={getChampionName(info.mostPlayedChampion)}
+      />
 
       <HolisticStatsCards
         kills={info.kills}
@@ -209,57 +202,164 @@ const App = () => {
         We'll give the boring stuff first.
       </HolisticStatsCards>
 
-      <Hexagon summonerName={info.summonerName} kda={(info.kills + info.assists)/info.deaths} cs={Math.round(100*(info.cs / (info.gameDuration / 60))) / 100} winRate={Math.round(100*(info.numWins / info.numGames))} killParticipation={Math.round(100*((info.kills + info.assists)/info.numTeamKills))} teamDamage={Math.round(100*(info.totalDamageToChamps / info.totalTeamDamage))} visionScore={Math.round(100*(info.visionScore / (info.gameDuration / 60))) / 100}/>
+      <Hexagon
+        summonerName={info.summonerName}
+        kda={(info.kills + info.assists) / info.deaths}
+        cs={Math.round(100 * (info.cs / (info.gameDuration / 60))) / 100}
+        winRate={Math.round(100 * (info.numWins / info.numGames))}
+        killParticipation={Math.round(100 * ((info.kills + info.assists) / info.numTeamKills))}
+        teamDamage={Math.round(100 * (info.totalDamageToChamps / info.totalTeamDamage))}
+        visionScore={Math.round(100 * (info.visionScore / (info.gameDuration / 60))) / 100}
+      />
 
-      <FavChampsCards favoriteChamps={info.favoriteChamps}>You seem to like these champs a lot, but how good at them are you exactly?</FavChampsCards>
+      <FavChampsCards favoriteChamps={info.favoriteChamps}>
+        You seem to like these champs a lot, but how good at them are you exactly?
+      </FavChampsCards>
 
-      <MultiKillsCards doubleKills={info.doubleKills} tripleKills={info.tripleKills} quadraKills={info.quadraKills} pentaKills={info.pentaKills}>Are you good at last hitting?</MultiKillsCards>
+      <MultiKillsCards
+        doubleKills={info.doubleKills}
+        tripleKills={info.tripleKills}
+        quadraKills={info.quadraKills}
+        pentaKills={info.pentaKills}
+      >
+        Are you good at last hitting?
+      </MultiKillsCards>
 
-      <TimeVsWin timeVsWins={[info.winsUnder20, info.winsUnder30, info.winsUnder40, info.winsPast40]} />
+      <TimeVsWin
+        timeVsWins={[
+          info.winsUnder20,
+          info.winsUnder30,
+          info.winsUnder40,
+          info.winsPast40,
+        ]}
+      />
 
-      <VisionScore visionScore={info.visionScore} numGames={info.numGames}>Just to show that supports are more than just wards these days. They are also this.</VisionScore>
+      <VisionScore
+        visionScore={info.visionScore}
+        numGames={info.numGames}
+      >
+        Just to show that supports are more than just wards these days. They are also this.
+      </VisionScore>
 
       {/* kp.jsx */}
       <div>Reminder: League is a team game.</div>
-      <div>Avg KP: {Math.round(100*((info.kills + info.assists) / info.numTeamKills))}%</div>
+      <div>
+        Avg KP:
+        {Math.round(100 * ((info.kills + info.assists) / info.numTeamKills))}
+        %
+      </div>
 
       {/* dmgPercent.jsx */}
       <div>Let's be honest about how much you contributed though.</div>
-      <div>Avg Percentage of Team Damage: {Math.round(100*(info.totalDamageToChamps / info.totalTeamDamage))}%</div>
+      <div>
+        Avg Percentage of Team Damage:
+        {Math.round(100 * (info.totalDamageToChamps / info.totalTeamDamage))}
+        %
+      </div>
 
       {/* timeLiving.jsx */}
       <div>Longest time you went without seeing the gray screen</div>
-      <div>Stayed Alive for {Math.floor(info.longestTimeSpentLiving / 60)} minutes and {Math.floor(info.longestTimeSpentLiving % 60)} seconds as {getChampionName(info.longestTimeSpentLivingChampId)}</div>
-      <div>Glad to know you weren't that bad for one game. Here's the match history if you're curious: {info.longestTimeSpentLivingMatchId}</div>
+      <div>
+        Stayed Alive for
+        {Math.floor(info.longestTimeSpentLiving / 60)}
+        {' '}
+        minutes and
+        {Math.floor(info.longestTimeSpentLiving % 60)}
+        {' '}
+        seconds as
+        {getChampionName(info.longestTimeSpentLivingChampId)}
+      </div>
+      <div>
+        Glad to know you weren't that bad for one game. Here's the match history if you're curious:
+        {info.longestTimeSpentLivingMatchId}
+      </div>
 
       {/* gold.jsx */}
       <div>What Riot should actually be putting in the loading screen.</div>
       <div>Fun fact: gold you don't spend doesn't transfer to the next game.</div>
-      <div>Gold wasted: {info.goldEarned - info.goldSpent}</div>
+      <div>
+        Gold wasted:
+        {info.goldEarned - info.goldSpent}
+      </div>
 
       {/* timecced.jsx */}
       <div>This is the amount of time you didn't let others play League of Legends. Poor soul(s)</div>
-      <div>Time Spent Ccing Others: {Math.floor(info.timeCCingOthers / 60)} minutes and {Math.floor(info.timeCCingOthers % 60)} seconds</div>
-      <div>This is the equivalent to getting hit by {Math.floor(info.timeCCingOthers / 3)} Morgana Q's.</div>
+      <div>
+        Time Spent Ccing Others:
+        {Math.floor(info.timeCCingOthers / 60)}
+        {' '}
+        minutes and
+        {Math.floor(info.timeCCingOthers % 60)}
+        {' '}
+        seconds
+      </div>
+      <div>
+        This is the equivalent to getting hit by
+        {Math.floor(info.timeCCingOthers / 3)}
+        {' '}
+        Morgana Q's.
+      </div>
 
       {/* firstBlood.jsx */}
       <div>Were you able to translate your first blood kill to a win?</div>
-      <div>Amount of First Bloods that resulted in a win: {Math.round(100*(info.winsWithFirstBlood / info.numFirstBlood)) / 100}</div>
+      <div>
+        Amount of First Bloods that resulted in a win:
+        {Math.round(100 * (info.winsWithFirstBlood / info.numFirstBlood)) / 100}
+      </div>
 
       {/* killspree.jsx */}
       <div>Did someone kill your puppy Mr. Wick?</div>
-      <div>Largest Killing Spree: {info.largestKillingSpree} with {getChampionName(info.largestKillingSpreeChamp)}</div>
-      <div>Check out your match history here: {info.largestKillingSpreeMatchId}</div>
+      <div>
+        Largest Killing Spree:
+        {info.largestKillingSpree}
+        {' '}
+        with
+        {getChampionName(info.largestKillingSpreeChamp)}
+      </div>
+      <div>
+        Check out your match history here:
+        {info.largestKillingSpreeMatchId}
+      </div>
 
       {/* bestAndWorst.jsx  number 8 */}
       <div>We all have bad days. Yours start when you see someone lock in this champ</div>
-      <div>Died to {getChampionName(info.mostDiedToChampionId)} the most. {info.mostDiedToChampionDeaths} times</div>
-      <div>Worst Winrate Against {getChampionName(info.worstWinrateAgainstChampionId)} at {info.worstWinrateAgainstChampionPercentage * 100}%</div>
+      <div>
+        Died to
+        {getChampionName(info.mostDiedToChampionId)}
+        {' '}
+        the most.
+        {info.mostDiedToChampionDeaths}
+        {' '}
+        times
+      </div>
+      <div>
+        Worst Winrate Against
+        {getChampionName(info.worstWinrateAgainstChampionId)}
+        {' '}
+        at
+        {info.worstWinrateAgainstChampionPercentage * 100}
+        %
+      </div>
       <div>On the other hand, here are the times you can play with ONE hand... haha (I'm sorry)</div>
-      <div>Killed {getChampionName(info.mostKilledChampionId)} the most. {info.mostKilledChampionKills} times</div>
-      <div>Best Winrate Against {getChampionName(info.bestWinrateAgainstChampionId)} at {info.bestWinrateAgainstChampionPercentage * 100}%</div>
+      <div>
+        Killed
+        {getChampionName(info.mostKilledChampionId)}
+        {' '}
+        the most.
+        {info.mostKilledChampionKills}
+        {' '}
+        times
+      </div>
+      <div>
+        Best Winrate Against
+        {getChampionName(info.bestWinrateAgainstChampionId)}
+        {' '}
+        at
+        {info.bestWinrateAgainstChampionPercentage * 100}
+        %
+      </div>
     </div>
   );
-}
+};
 
 export default App;
