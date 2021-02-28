@@ -5,7 +5,6 @@ import ContentWrapper from '../reuse/ContentWrapper.js';
 import SectionWrapper from '../reuse/SectionWrapper.js';
 import Card from './Card.jsx';
 
-
 const CardsContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
@@ -14,13 +13,10 @@ const CardsContainer = styled.div`
   width: 100%;
 `;
 
-
-const FavChampsCards = ({children, favoriteChamps}) => {
-  const favChamps = favoriteChamps.map((champ, i) => {
-    return (
-      <Card key={i} favChamp={champ}></Card>
-    );
-  })
+const FavChampsCards = ({ children, favoriteChamps }) => {
+  const favChamps = favoriteChamps.map((champ, i) => (
+    <Card key={i} favChamp={champ} />
+  ));
   return (
     <SectionWrapper>
       <ContentWrapper>
@@ -30,7 +26,7 @@ const FavChampsCards = ({children, favoriteChamps}) => {
         </CardsContainer>
       </ContentWrapper>
     </SectionWrapper>
-  )
+  );
 };
 
 export default FavChampsCards;

@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { getChampionName } from '../../../../champion-library/helper.js';
 import Stat from './Stat.jsx';
 
 const StyledCard = styled.div`
@@ -17,10 +18,9 @@ const InnerCard = styled.div`
   position: relative;
   transform: ${(props) => {
     if (props.front) {
-      return 'rotateY(180deg)'
-    } else {
-      return 'rotateY(0deg)'
+      return 'rotateY(180deg)';
     }
+    return 'rotateY(0deg)';
   }};
 `;
 
@@ -58,26 +58,31 @@ const StatsWrapper = styled.div`
     align-items: center;
 `;
 
-
-const Card = ({favChamp}) => {
+const Card = ({ favChamp }) => {
   const [flip, setFlip] = useState(false);
 
   return (
     <StyledCard>
       <InnerCard front={flip} onClick={() => setFlip(!flip)}>
         <ImgWrapper>
-          <LoadingImg src="https://loadingscreenimg.s3-us-west-1.amazonaws.com/Aatrox_0.jpg" alt="Loading Screen Image of Champion"></LoadingImg>
+          <LoadingImg src={`https://loadingscreenimg.s3-us-west-1.amazonaws.com/${getChampionName(favChamp.champId)}_0.jpg`} alt="Loading Screen Image of Champion" />
         </ImgWrapper>
         <StatsWrapper>
-          <Stat games={'GAMES PLAYED'}>{favChamp.numGames}</Stat>
-          <Stat winRate={'WIN RATE'}>{Math.round(100*(favChamp.numWins / favChamp.numGames))}%</Stat>
-          <Stat kda={'AVG KDA'}>{Math.round(100*((favChamp.totalKills + favChamp.totalAssists) / favChamp.totalDeaths)) / 100}</Stat>
-          <Stat kills={'AVG KILLS'}>{Math.round(100*(favChamp.totalKills / favChamp.numGames)) / 100}</Stat>
-          <Stat deaths={'AVG DEATHS'}>{Math.round(100*(favChamp.totalDeaths / favChamp.numGames)) / 100}</Stat>
-          <Stat assists={'AVG ASSISTS'}>{Math.round(100*(favChamp.totalAssists / favChamp.numGames)) / 100}</Stat>
-          <Stat csPerMin={'AVG CS/MIN'}>{Math.round(100*(favChamp.totalCs / (favChamp.totalGameDuration / 60))) / 100}</Stat>
-          <Stat dmgPerGame={'DMG/GAME'}>{Math.round(100*(favChamp.totalDamageToChamps / favChamp.numGames)) / 100}</Stat>
-          <Stat percentOfTeamDamage={'% OF TEAM DMG'}>{Math.round(100*(favChamp.totalDamageToChamps / favChamp.totalTeamDamageToChamps))}%</Stat>
+          <Stat games="GAMES PLAYED">{favChamp.numGames}</Stat>
+          <Stat winRate="WIN RATE">
+            {Math.round(100 * (favChamp.numWins / favChamp.numGames))}
+            %
+          </Stat>
+          <Stat kda="AVG KDA">{Math.round(100 * ((favChamp.totalKills + favChamp.totalAssists) / favChamp.totalDeaths)) / 100}</Stat>
+          <Stat kills="AVG KILLS">{Math.round(100 * (favChamp.totalKills / favChamp.numGames)) / 100}</Stat>
+          <Stat deaths="AVG DEATHS">{Math.round(100 * (favChamp.totalDeaths / favChamp.numGames)) / 100}</Stat>
+          <Stat assists="AVG ASSISTS">{Math.round(100 * (favChamp.totalAssists / favChamp.numGames)) / 100}</Stat>
+          <Stat csPerMin="AVG CS/MIN">{Math.round(100 * (favChamp.totalCs / (favChamp.totalGameDuration / 60))) / 100}</Stat>
+          <Stat dmgPerGame="DMG/GAME">{Math.round(100 * (favChamp.totalDamageToChamps / favChamp.numGames)) / 100}</Stat>
+          <Stat percentOfTeamDamage="% OF TEAM DMG">
+            {Math.round(100 * (favChamp.totalDamageToChamps / favChamp.totalTeamDamageToChamps))}
+            %
+          </Stat>
         </StatsWrapper>
       </InnerCard>
     </StyledCard>

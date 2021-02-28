@@ -168,8 +168,6 @@ const App = () => {
           bestWinrateAgainstChampionId: bestWinRate.champId,
           bestWinrateAgainstChampionPercentage: bestWinRate.currentWinRate,
         });
-
-        console.log(results.data);
       })
       .catch((err) => {
         if (err.response.status == 400) {
