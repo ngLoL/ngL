@@ -7,7 +7,6 @@ import Hexagon from './Hexagon.jsx';
 import FavChampsCards from './favChampRoutes/FavChampsCards.jsx';
 import MultiKillsCards from './multiKills/MultiKillsCards.jsx';
 import TimeVsWin from './TimeVsWin.jsx';
-import VisionScore from './VisionScore.jsx';
 
 const App = () => {
   const [info, setInfo] = useState({
@@ -169,6 +168,8 @@ const App = () => {
           bestWinrateAgainstChampionId: bestWinRate.champId,
           bestWinrateAgainstChampionPercentage: bestWinRate.currentWinRate,
         });
+
+        console.log(results.data);
       })
       .catch((err) => {
         if (err.response.status == 400) {
@@ -180,7 +181,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    getSummonerInfo('doublelift');
+    getSummonerInfo('TheLastStand');
   }, []);
 
   return (
@@ -210,7 +211,9 @@ const App = () => {
         killParticipation={Math.round(100 * ((info.kills + info.assists) / info.numTeamKills))}
         teamDamage={Math.round(100 * (info.totalDamageToChamps / info.totalTeamDamage))}
         visionScore={Math.round(100 * (info.visionScore / (info.gameDuration / 60))) / 100}
-      />
+      >
+        See how you compare to the best when they're playing against the best.
+      </Hexagon>
 
       <FavChampsCards favoriteChamps={info.favoriteChamps}>
         You seem to like these champs a lot, but how good at them are you exactly?
@@ -226,138 +229,17 @@ const App = () => {
       </MultiKillsCards>
 
       <TimeVsWin
-        timeVsWins={[
-          info.winsUnder20,
-          info.winsUnder30,
-          info.winsUnder40,
-          info.winsPast40,
-        ]}
-      />
-
-      <VisionScore
-        visionScore={info.visionScore}
-        numGames={info.numGames}
+        winsUnder20={info.winsUnder20}
+        winsUnder30={info.winsUnder30}
+        winsUnder40={info.winsUnder40}
+        winsPast40={info.winsPast40}
+        gamesUnder20={info.gamesUnder20}
+        gamesUnder30={info.gamesUnder30}
+        gamesUnder40={info.gamesUnder40}
+        gamesPast40={info.gamesPast40}
       >
-        Just to show that supports are more than just wards these days. They are also this.
-      </VisionScore>
-
-      {/* kp.jsx */}
-      <div>Reminder: League is a team game.</div>
-      <div>
-        Avg KP:
-        {Math.round(100 * ((info.kills + info.assists) / info.numTeamKills))}
-        %
-      </div>
-
-      {/* dmgPercent.jsx */}
-      <div>Let's be honest about how much you contributed though.</div>
-      <div>
-        Avg Percentage of Team Damage:
-        {Math.round(100 * (info.totalDamageToChamps / info.totalTeamDamage))}
-        %
-      </div>
-
-      {/* timeLiving.jsx */}
-      <div>Longest time you went without seeing the gray screen</div>
-      <div>
-        Stayed Alive for
-        {Math.floor(info.longestTimeSpentLiving / 60)}
-        {' '}
-        minutes and
-        {Math.floor(info.longestTimeSpentLiving % 60)}
-        {' '}
-        seconds as
-        {getChampionName(info.longestTimeSpentLivingChampId)}
-      </div>
-      <div>
-        Glad to know you weren't that bad for one game. Here's the match history if you're curious:
-        {info.longestTimeSpentLivingMatchId}
-      </div>
-
-      {/* gold.jsx */}
-      <div>What Riot should actually be putting in the loading screen.</div>
-      <div>Fun fact: gold you don't spend doesn't transfer to the next game.</div>
-      <div>
-        Gold wasted:
-        {info.goldEarned - info.goldSpent}
-      </div>
-
-      {/* timecced.jsx */}
-      <div>This is the amount of time you didn't let others play League of Legends. Poor soul(s)</div>
-      <div>
-        Time Spent Ccing Others:
-        {Math.floor(info.timeCCingOthers / 60)}
-        {' '}
-        minutes and
-        {Math.floor(info.timeCCingOthers % 60)}
-        {' '}
-        seconds
-      </div>
-      <div>
-        This is the equivalent to getting hit by
-        {Math.floor(info.timeCCingOthers / 3)}
-        {' '}
-        Morgana Q's.
-      </div>
-
-      {/* firstBlood.jsx */}
-      <div>Were you able to translate your first blood kill to a win?</div>
-      <div>
-        Amount of First Bloods that resulted in a win:
-        {Math.round(100 * (info.winsWithFirstBlood / info.numFirstBlood)) / 100}
-      </div>
-
-      {/* killspree.jsx */}
-      <div>Did someone kill your puppy Mr. Wick?</div>
-      <div>
-        Largest Killing Spree:
-        {info.largestKillingSpree}
-        {' '}
-        with
-        {getChampionName(info.largestKillingSpreeChamp)}
-      </div>
-      <div>
-        Check out your match history here:
-        {info.largestKillingSpreeMatchId}
-      </div>
-
-      {/* bestAndWorst.jsx  number 8 */}
-      <div>We all have bad days. Yours start when you see someone lock in this champ</div>
-      <div>
-        Died to
-        {getChampionName(info.mostDiedToChampionId)}
-        {' '}
-        the most.
-        {info.mostDiedToChampionDeaths}
-        {' '}
-        times
-      </div>
-      <div>
-        Worst Winrate Against
-        {getChampionName(info.worstWinrateAgainstChampionId)}
-        {' '}
-        at
-        {info.worstWinrateAgainstChampionPercentage * 100}
-        %
-      </div>
-      <div>On the other hand, here are the times you can play with ONE hand... haha (I'm sorry)</div>
-      <div>
-        Killed
-        {getChampionName(info.mostKilledChampionId)}
-        {' '}
-        the most.
-        {info.mostKilledChampionKills}
-        {' '}
-        times
-      </div>
-      <div>
-        Best Winrate Against
-        {getChampionName(info.bestWinrateAgainstChampionId)}
-        {' '}
-        at
-        {info.bestWinrateAgainstChampionPercentage * 100}
-        %
-      </div>
+        Early-game stomper, mid-game monster, or a late-game powerhouse?
+      </TimeVsWin>
     </div>
   );
 };
